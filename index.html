@@ -1,0 +1,1190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Study Planner 🎀</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Kiwi+Maru:wght@400;500&family=Caveat:wght@500;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink-light: #FFA6B7;
+    --pink-deep: #CE7183;
+    --cream: #FFF6F8;
+    --white-petal: #FFFFFF;
+    --plum-text: #6B3B47;
+    --gold-ribbon: #F3C9CF;
+    --mint-accent: #EAD9DD;
+    --shadow-soft: rgba(206,113,131,0.25);
+  }
+
+  *{box-sizing:border-box;}
+
+  body{
+    margin:0;
+    font-family:'Nunito', sans-serif;
+    background:
+      radial-gradient(circle at 10% 10%, #FFE3E9 0%, transparent 40%),
+      radial-gradient(circle at 90% 20%, #FFD6DE 0%, transparent 35%),
+      linear-gradient(180deg, var(--cream) 0%, #FFEFF2 100%);
+    color: var(--plum-text);
+    min-height:100vh;
+    padding: 24px 14px 60px;
+  }
+
+  .wrap{max-width:640px;margin:0 auto;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    text-align:center;
+    margin-bottom: 16px;
+    position:relative;
+  }
+  .ribbon-title{
+    font-family:'Kiwi Maru', serif;
+    font-size: 2rem;
+    color: var(--pink-deep);
+    margin: 6px 0 2px;
+    letter-spacing: 0.5px;
+  }
+  .subtitle{
+    font-family:'Caveat', cursive;
+    font-size: 1.3rem;
+    color: var(--pink-deep);
+    opacity:0.85;
+    margin:0;
+  }
+  .petals{font-size:1.4rem;letter-spacing:6px;opacity:0.9;}
+
+  /* ---------- NAVEGACIÓN (TABS) ---------- */
+  .main-nav {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+  .nav-btn {
+    font-family: 'Nunito', sans-serif;
+    font-weight: 800;
+    font-size: 0.9rem;
+    border: 2px solid #FFE3E9;
+    border-radius: 999px;
+    padding: 8px 16px;
+    background: var(--white-petal);
+    color: var(--pink-deep);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 10px var(--shadow-soft);
+  }
+  .nav-btn:hover {
+    transform: translateY(-2px);
+    border-color: var(--pink-light);
+  }
+  .nav-btn.active {
+    background: linear-gradient(135deg, var(--pink-light), var(--pink-deep));
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 6px 14px var(--shadow-soft);
+  }
+
+  /* ---------- SECCIONES DE PÁGINA ---------- */
+  .page-section {
+    display: none;
+    animation: fadeIn 0.4s ease;
+  }
+  .page-section.active-section {
+    display: block;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ---------- CARD BASE ---------- */
+  .card{
+    background: var(--white-petal);
+    border-radius: 28px;
+    padding: 22px 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px var(--shadow-soft);
+    border: 2px solid #FFE3E9;
+    position:relative;
+    overflow:hidden;
+  }
+  .card::before{
+    content:"🌸";
+    position:absolute;
+    top:-10px; right:-6px;
+    font-size:3rem;
+    opacity:0.10;
+    transform: rotate(15deg);
+  }
+  .card h2{
+    font-family:'Kiwi Maru', serif;
+    color: var(--pink-deep);
+    font-size:1.15rem;
+    margin:0 0 14px;
+    display:flex; align-items:center; gap:8px;
+  }
+
+  /* ---------- POMODORO & TRACKER ---------- */
+  .timer-zone{ text-align:center; }
+  .timer-settings { 
+    display: flex; justify-content: center; align-items: center; 
+    gap: 12px; margin-bottom: 12px; margin-top: -6px;
+  }
+  .pomo-duration-text { 
+    font-family: 'Nunito', sans-serif; font-weight: 800; 
+    color: var(--pink-deep); font-size: 1.05rem; width: 65px; text-align: center;
+  }
+  button.small-btn { padding: 4px 12px; font-size: 0.8rem; }
+
+  .ring-holder{ position:relative; width:220px; height:220px; margin:0 auto 14px; }
+  svg.ring{ transform: rotate(-90deg); width:220px; height:220px; }
+  .ring-bg{ fill:none; stroke:#FFE9ED; stroke-width:14; }
+  .ring-progress{
+    fill:none; stroke:url(#grad); stroke-width:14; stroke-linecap:round;
+    transition: stroke-dashoffset 1s linear;
+  }
+  .time-display{
+    position:absolute; top:0; left:0; width:100%; height:100%;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+  }
+  .time-display .num{ font-family:'Kiwi Maru', serif; font-size:2.4rem; color:var(--pink-deep); }
+  .time-display .lbl{ font-family:'Caveat', cursive; font-size:1.1rem; color:var(--pink-deep); opacity:0.8; }
+
+  .timer-buttons{ display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:6px; }
+  button.kawaii-btn{
+    font-family:'Nunito', sans-serif; font-weight:700; font-size:0.9rem;
+    border:none; border-radius: 999px; padding:10px 20px; cursor:pointer;
+    background: linear-gradient(135deg, var(--pink-light), var(--pink-deep));
+    color:white; box-shadow: 0 6px 14px var(--shadow-soft);
+    transition: transform .15s ease;
+  }
+  button.kawaii-btn.secondary{
+    background: white; color:var(--pink-deep); border:2px solid var(--pink-light);
+    box-shadow:none;
+  }
+  button.kawaii-btn:hover{ transform: translateY(-2px) scale(1.03); }
+  button.kawaii-btn:active{ transform: scale(0.97); }
+
+  .session-count{ margin-top:10px; font-size:0.85rem; color:var(--pink-deep); }
+  .session-count .bow{ font-size:1rem; }
+
+  .tracker-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-top: 10px;
+  }
+  .tracker-card {
+    background: #FFFDFE; border: 2px solid #FFE3E9; border-radius: 16px;
+    padding: 12px; text-align: center; box-shadow: 0 4px 10px var(--shadow-soft);
+  }
+  .tracker-title {
+    font-size: 0.8rem; font-weight: 800; color: var(--plum-text);
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .tracker-color-dot {
+    width: 12px; height: 12px; border-radius: 50%; display: inline-block;
+    border: 1px solid rgba(107,59,71,0.15);
+  }
+  .tracker-time {
+    font-family: 'Kiwi Maru', serif; font-size: 1.3rem; color: var(--pink-deep);
+    margin-top: 6px;
+  }
+
+  /* ---------- PALETAS EDITABLES (Reutilizable para Pomodoro y Horario) ---------- */
+  .palette-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
+  .palette-swatch{
+    display:flex; align-items:center; gap:6px; padding:6px 10px 6px 8px; border-radius:999px;
+    border:2px solid transparent; cursor:pointer; font-size:0.75rem; font-weight:700;
+    background:#FFF6F8; color:var(--plum-text); transition: transform .12s ease;
+  }
+  .palette-swatch:hover{ transform: translateY(-1px); }
+  .palette-swatch.active{ border-color:var(--pink-deep); box-shadow:0 4px 10px var(--shadow-soft); background:white; }
+  .palette-dot{ width:14px; height:14px; border-radius:50%; display:inline-block; border:1px solid rgba(107,59,71,0.15); flex-shrink:0; }
+  .palette-dot.eraser{ background:repeating-linear-gradient(45deg, #fff, #fff 2px, #f3c9cf 2px, #f3c9cf 4px); }
+
+  .palette-color-input{
+    width:16px; height:16px; padding:0; border:1px solid rgba(107,59,71,0.15); border-radius:50%;
+    cursor:pointer; background:none; flex-shrink:0;
+  }
+  .palette-color-input::-webkit-color-swatch-wrapper{ padding:0; border-radius:50%; }
+  .palette-color-input::-webkit-color-swatch{ border:none; border-radius:50%; }
+  .palette-color-input::-moz-color-swatch{ border:none; border-radius:50%; }
+
+  .palette-name{
+    outline:none; cursor:text; border-bottom:1px dashed transparent; min-width:12px;
+  }
+  .palette-name:focus{ border-bottom-color:var(--pink-deep); }
+
+  .palette-delete{
+    background:none; border:none; color:var(--pink-deep); font-weight:800; cursor:pointer;
+    font-size:0.85rem; line-height:1; padding:0 0 0 2px; opacity:0.55;
+  }
+  .palette-delete:hover{ opacity:1; }
+
+  .palette-add-btn{
+    display:flex; align-items:center; gap:4px; padding:6px 14px; border-radius:999px;
+    border:2px dashed var(--pink-light); cursor:pointer; font-size:0.75rem; font-weight:700;
+    background:white; color:var(--pink-deep);
+  }
+
+  /* ---------- MINI QUIZ ---------- */
+  .quiz-zone { text-align: center; }
+  .quiz-active-area { display: none; flex-direction: column; align-items: center; gap: 16px; }
+  .quiz-card-wrapper {
+    width: 100%; max-width: 280px; height: 130px;
+    perspective: 1000px; cursor: pointer; margin: 0 auto;
+  }
+  .quiz-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
+  /* ---------- FLASHCARDS ---------- */
+  .flashcard-input-row {
+    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
+  }
+  .flashcard-input-row input {
+    flex: 1; min-width: 120px; padding:10px 14px; border-radius:16px;
+    border:2px solid var(--gold-ribbon); font-family:'Nunito'; font-size:0.95rem;
+    background:#FFFAFB; color:var(--plum-text); outline:none;
+  }
+  .flashcard-input-row input:focus{ border-color:var(--pink-deep); }
+
+  .flashcard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+  }
+  .flashcard {
+    background-color: transparent;
+    width: 100%;
+    height: 90px;
+    perspective: 1000px;
+    cursor: pointer;
+    position: relative;
+  }
+  .flashcard-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
+    transform-style: preserve-3d;
+  }
+  .flashcard.is-flipped .flashcard-inner {
+    transform: rotateY(180deg);
+  }
+  .flashcard-front, .flashcard-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    padding: 10px;
+    box-shadow: 0 4px 10px var(--shadow-soft);
+    font-weight: 800;
+    font-size: 1rem;
+    word-break: break-word;
+  }
+  .flashcard-front {
+    background-color: #FFF0F3;
+    color: var(--pink-deep);
+    border: 2px solid #FFE3E9;
+  }
+  .flashcard-back {
+    background: linear-gradient(135deg, var(--pink-light), var(--pink-deep));
+    color: white;
+    transform: rotateY(180deg);
+    font-size: 0.9rem;
+  }
+  .delete-card {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    background: white;
+    color: var(--pink-deep);
+    border: 2px solid var(--pink-light);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  .flashcard:hover .delete-card {
+    opacity: 1;
+  }
+  #quizFront, #quizBack { font-size: 1.3rem; }
+
+  /* ---------- DAY TABS Y TASKS ---------- */
+  .day-tabs{ display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:14px; }
+  .day-tab{
+    flex:0 0 auto; padding:8px 14px; border-radius:14px; font-size:0.8rem; font-weight:700;
+    background:#FFF0F3; color:var(--pink-deep); cursor:pointer; border:2px solid transparent;
+    white-space:nowrap;
+  }
+  .day-tab.active{ background: var(--pink-deep); color:white; }
+  .day-tab.passive-day{ border-style:dashed; border-color:var(--pink-light); }
+
+  .day-panel{ display:none; }
+  .day-panel.show{ display:block; }
+
+  .task-item{ display:flex; align-items:flex-start; gap:10px; padding:10px 8px; border-bottom: 1px dashed #FFE3E9; }
+  .task-item:last-child{ border-bottom:none; }
+  .task-item input[type=checkbox]{ width:20px; height:20px; accent-color: var(--pink-deep); margin-top:2px; cursor:pointer; flex-shrink:0; }
+  .task-item label{ font-size:0.92rem; line-height:1.35; cursor:pointer; }
+  .task-item .task-title{ font-weight:700; color:var(--pink-deep); }
+  .task-item.done label{ text-decoration: line-through; opacity:0.55; }
+
+  .passive-note{ font-family:'Caveat', cursive; font-size:1.1rem; color:var(--pink-deep); text-align:center; padding: 6px 0 2px; }
+
+  /* ---------- PROGRESS ---------- */
+  .progress-wrap{ margin-top: 6px; }
+  .progress-bar-bg{ width:100%; height:16px; background:#FFE9ED; border-radius:999px; overflow:hidden; border: 2px solid #FFD6DE; }
+  .progress-bar-fill{ height:100%; background: linear-gradient(90deg, var(--pink-light), var(--pink-deep)); border-radius:999px; transition: width .4s ease; width:0%; }
+  .progress-label{ text-align:center; font-size:0.85rem; margin-top:6px; color:var(--pink-deep); font-weight:700; }
+
+  footer{ text-align:center; font-family:'Caveat', cursive; font-size:1.1rem; color:var(--pink-deep); opacity:0.8; margin-top: 10px; }
+
+  /* ---------- HOJA DE RUTA ---------- */
+  .exam-banner{
+    background: linear-gradient(135deg, var(--pink-deep), var(--pink-light));
+    color:white; border-radius:18px; padding:12px 16px; text-align:center;
+    font-weight:800; font-size:0.9rem; margin-bottom:16px; box-shadow:0 6px 14px var(--shadow-soft);
+  }
+  .exam-banner span{ font-family:'Caveat', cursive; font-size:1.15rem; display:block; font-weight:600; margin-top:2px; }
+  details.month-block{ border: 2px solid #FFE3E9; border-radius:18px; margin-bottom:10px; overflow:hidden; background:#FFFCFD; }
+  details.month-block summary{
+    cursor:pointer; list-style:none; padding:12px 16px; font-family:'Kiwi Maru', serif;
+    color: var(--pink-deep); font-size:1rem; display:flex; justify-content:space-between; align-items:center; background:#FFF0F3;
+  }
+  details.month-block summary::-webkit-details-marker{ display:none; }
+  details.month-block summary::after{ content:"🌸"; transition: transform .25s ease; }
+  details.month-block[open] summary::after{ transform: rotate(90deg); }
+  .month-tag{ font-family:'Nunito'; font-size:0.7rem; font-weight:800; color:white; background:var(--pink-deep); border-radius:999px; padding:3px 10px; margin-right:8px; }
+  .week-row{ padding: 10px 16px; border-top: 1px dashed #FFE3E9; }
+  .week-row .wk-title{ font-weight:800; color:var(--pink-deep); font-size:0.85rem; margin-bottom:4px; }
+  .week-row .wk-detail{ font-size:0.85rem; line-height:1.5; }
+  .month-goal{ padding: 10px 16px; font-family:'Caveat', cursive; font-size:1.05rem; color:var(--pink-deep); background:#FFF6F8; }
+
+  /* ---------- HORARIO SEMANAL GRID ---------- */
+  .schedule-hint{ font-family:'Caveat', cursive; font-size:1rem; color:var(--pink-deep); margin: -6px 0 14px; opacity:0.85; }
+  .schedule-scroll{ overflow-x:auto; padding-bottom:6px; }
+  .schedule-grid{ display:grid; grid-template-columns: 62px repeat(7, minmax(88px, 1fr)); gap:4px; min-width: 700px; }
+  .sched-header{ background:var(--pink-deep); color:white; text-align:center; font-weight:800; font-size:0.72rem; padding:8px 4px; border-radius:8px; }
+  .sched-header.corner{ background:transparent; }
+  .sched-time{ background:#FFF0F3; color:var(--pink-deep); font-weight:700; font-size:0.7rem; display:flex; align-items:center; justify-content:center; border-radius:8px; padding:4px 2px; }
+  .sched-cell{ background:#FFFDFE; border:1.5px solid #FFE3E9; border-radius:8px; min-height:44px; padding:4px 6px; font-size:0.7rem; line-height:1.25; outline:none; cursor:pointer; transition: background .15s ease, border-color .15s ease; word-break: break-word; }
+  .sched-cell:focus{ border-color:var(--pink-deep); cursor:text; }
+  .sched-cell:empty::before{ content:"+"; color:#F0C2CB; }
+
+  @media (max-width:400px){
+    .ring-holder{ width:190px; height:190px; }
+    svg.ring{ width:190px; height:190px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="petals">🌸 🎀 🌸</div>
+    <h1 class="ribbon-title">Study Planner</h1>
+    <p class="subtitle">— rumbo al JLPT N4, un pétalo a la vez —</p>
+  </header>
+
+  <!-- MENÚ DE NAVEGACIÓN SUPERIOR -->
+  <nav class="main-nav">
+    <button class="nav-btn active" data-target="sec-pomodoro">🍡 Pomodoro</button>
+    <button class="nav-btn" data-target="sec-estudio">📖 Estudio</button>
+    <button class="nav-btn" data-target="sec-horario">🗓️ Horario</button>
+    <button class="nav-btn" data-target="sec-ruta">🗺️ Ruta JLPT</button>
+  </nav>
+
+  <!-- CARPETA 1: POMODORO & TRACKER -->
+  <div id="sec-pomodoro" class="page-section active-section">
+    
+    <!-- Selector de Categoría de Estudio -->
+    <div class="card">
+      <h2>🎯 ¿Qué vas a estudiar en este bloque?</h2>
+      <p class="schedule-hint">Toca una categoría antes de empezar. Puedes editar colores, nombres o agregar nuevas.</p>
+      <div class="palette-row" id="pomoPaletteRow"></div>
+    </div>
+
+    <!-- Temporizador -->
+    <div class="card timer-zone">
+      <h2>🍡 Tu Pomodoro</h2>
+      
+      <!-- CONTROLES DE TIEMPO -->
+      <div class="timer-settings">
+        <button class="kawaii-btn secondary small-btn" id="minusTimeBtn">- 5 min</button>
+        <span class="pomo-duration-text" id="pomoDurationText">45 min</span>
+        <button class="kawaii-btn secondary small-btn" id="plusTimeBtn">+ 5 min</button>
+      </div>
+
+      <div class="ring-holder">
+        <svg class="ring" viewBox="0 0 220 220">
+          <defs>
+            <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#FFA6B7"/>
+              <stop offset="100%" stop-color="#CE7183"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-bg" cx="110" cy="110" r="100"></circle>
+          <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="100"
+                  stroke-dasharray="628.3" stroke-dashoffset="0"></circle>
+        </svg>
+        <div class="time-display">
+          <span class="num" id="timeNum">45:00</span>
+          <span class="lbl" id="timeLbl">lista cuando tú quieras ♡</span>
+        </div>
+      </div>
+      <div class="timer-buttons">
+        <button class="kawaii-btn" id="startBtn">▶ Empezar</button>
+        <button class="kawaii-btn secondary" id="pauseBtn">⏸ Pausar</button>
+        <button class="kawaii-btn secondary" id="resetBtn">↺ Reiniciar</button>
+      </div>
+      <div class="session-count"><span class="bow">🎀</span> Bloques completados hoy: <span id="sessionCount">0</span></div>
+    </div>
+
+    <!-- Tracker de Tiempo -->
+    <div class="card">
+      <h2>📊 Tu Progreso de Estudio</h2>
+      <p class="schedule-hint">Cada vez que termines un pomodoro, el tiempo se sumará automáticamente aquí.</p>
+      <div class="tracker-grid" id="trackerGrid">
+        <!-- Las tarjetitas del tracker se generarán aquí -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CARPETA 2: ESTUDIO Y TAREAS -->
+  <div id="sec-estudio" class="page-section">
+    
+    <!-- MINI QUIZ INTERACTIVO -->
+    <div class="card">
+      <h2>🎮 Mini Quiz de Memoria</h2>
+      <div class="quiz-zone" id="quizZone">
+        <p class="subtitle" style="font-size:0.95rem; margin-bottom:14px; margin-top:-6px;">Pon a prueba las flashcards que tienes guardadas.</p>
+        <button class="kawaii-btn" id="startQuizBtn">▶ Empezar Quiz</button>
+      </div>
+      <div class="quiz-active-area" id="quizActiveArea">
+        <div class="quiz-card-wrapper flashcard" id="quizCardWrapper">
+          <div class="flashcard-inner">
+            <div class="flashcard-front" id="quizFront"></div>
+            <div class="flashcard-back" id="quizBack"></div>
+          </div>
+        </div>
+        <div class="quiz-controls">
+          <button class="kawaii-btn secondary" id="nextQuizBtn">Siguiente ⏭️</button>
+          <button class="kawaii-btn secondary" id="endQuizBtn">Terminar ⏹️</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FLASHCARDS INTERACTIVAS -->
+    <div class="card">
+      <h2>🎴 Mis Flashcards de Repaso</h2>
+      <div class="flashcard-input-row">
+        <input type="text" id="newVocabWord" placeholder="Palabra (ej: 敬語)" />
+        <input type="text" id="newVocabTrans" placeholder="Traducción (ej: Lenguaje honorífico)" />
+        <button class="kawaii-btn" id="addVocabBtn">+ Añadir</button>
+      </div>
+      <div class="flashcard-grid" id="flashcardContainer"></div>
+    </div>
+
+    <!-- MENÚ SEMANAL -->
+    <div class="card">
+      <h2>📖 Menú semanal flexible</h2>
+      <div class="day-tabs" id="dayTabs"></div>
+      <div id="dayPanels"></div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
+        <div class="progress-label" id="progressLabel">0% de la semana completado</div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-bottom: 20px;">
+      <button class="kawaii-btn secondary" id="resetWeekBtn">🧺 Reiniciar semana</button>
+    </div>
+  </div>
+
+  <!-- CARPETA 3: HORARIO SEMANAL -->
+  <div id="sec-horario" class="page-section">
+    <div class="card">
+      <h2>🗓️ Mi horario semanal</h2>
+      <p class="schedule-hint">toca el nombre para renombrar, el círculo para cambiar el color, ✕ para eliminar, y "+ Nueva" para crear tus propias categorías ♡</p>
+
+      <div class="palette-row" id="schedPaletteRow"></div>
+
+      <div class="schedule-scroll">
+        <div class="schedule-grid" id="scheduleGrid"></div>
+      </div>
+
+      <div style="text-align:center; margin-top:14px;">
+        <button class="kawaii-btn secondary" id="clearScheduleBtn">🌸 Borrar horario</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARPETA 4: HOJA DE RUTA -->
+  <div id="sec-ruta" class="page-section">
+    <div class="card">
+      <h2>🗺️ Hoja de ruta · Agosto → Diciembre</h2>
+      <div class="exam-banner">🎀 Examen JLPT N4 <span>Domingo 6 de diciembre de 2026 · USACH</span></div>
+
+      <details class="month-block" open>
+        <summary><span><span class="month-tag">AGO</span>Cerrar la primera mitad de Genki II</span></summary>
+        <div class="month-goal">meta: llegar a fin de mes con la lección 19 dominada 🌷</div>
+        <div class="week-row"><div class="wk-title">Semana 1-2</div><div class="wk-detail">Genki II Lección 16 "Objetos perdidos" + Lección 17 "Quejas y chismes". Vocabulario temático de Hajimete no Nihongo (elige 2 categorías del 単語1500). Empiezas tu mazo de Anki con Kanji Master N4 (primeras categorías temáticas, 10-15 kanji/semana).</div></div>
+        <div class="week-row"><div class="wk-title">Semana 3-4</div><div class="wk-detail">Genki II Lección 18 "El trabajo de medio tiempo de John" + Lección 19 "Conociendo al jefe" (aquí arranca el keigo honorífico, tu primer gran reto gramatical). Sigue Anki a diario.</div></div>
+      </details>
+      <details class="month-block">
+        <summary><span><span class="month-tag">SEP</span>Terminar Genki II por completo</span></summary>
+        <div class="month-goal">meta: cerrar las 23 lecciones antes de octubre 🎀</div>
+        <div class="week-row"><div class="wk-title">Semana 5-6</div><div class="wk-detail">Lección 20 "Mary de compras" (keigo humilde) + Lección 21 "El ladrón" (voz pasiva, ukemi). Anki sube de ritmo (15-20 kanji nuevos/semana).</div></div>
+        <div class="week-row"><div class="wk-title">Semana 7-8</div><div class="wk-detail">Lección 22 "Educación en Japón" (causativo) + Lección 23 "Despedida" (causativo-pasivo, el punto más avanzado). ¡Genki II completo! Empieza a cronometrar lecturas cortas sin presión.</div></div>
+      </details>
+      <details class="month-block">
+        <summary><span><span class="month-tag">OCT</span>TRY! N4 intensivo + cerrar kanji y vocabulario</span></summary>
+        <div class="month-goal">meta: todo el contenido nuevo cerrado antes del 1 de noviembre 🌸</div>
+        <div class="week-row"><div class="wk-title">Semana 9</div><div class="wk-detail">TRY! N4 Cap. 1 "Saludos" + Cap. 2 "Haciendo dulces" (12 patrones gramaticales).</div></div>
+        <div class="week-row"><div class="wk-title">Semana 10</div><div class="wk-detail">TRY! N4 Cap. 3 "Una boda" (9 patrones) + Cap. 4 "Soy de Hanoi" (12 patrones).</div></div>
+        <div class="week-row"><div class="wk-title">Semana 11</div><div class="wk-detail">TRY! N4 Cap. 5 "Plan de hiking" + Cap. 6 "Un gato en el árbol" (condicionales たら/ば/と/なら — tu combo más importante).</div></div>
+        <div class="week-row"><div class="wk-title">Semana 12</div><div class="wk-detail">TRY! N4 Cap. 7 "Amo el piano" + Cap. 8 "Reserva de un ryokan" + Cap. 9 "Entrevista post-victoria".</div></div>
+        <div class="week-row"><div class="wk-title">Semana 13</div><div class="wk-detail">TRY! N4 Cap. 10 "Entrevista de trabajo part-time" + Cap. 11 "Vocabulario útil" (partículas, adverbios, verbos transitivos/intransitivos). Cierra los 207 kanji de Kanji Master N4 y las 1500 palabras de Hajimete no Nihongo.</div></div>
+      </details>
+      <details class="month-block">
+        <summary><span><span class="month-tag">NOV</span>Mes 100% simulacro</span></summary>
+        <div class="month-goal">meta: medir tiempos reales, sobre todo en lectura 🎀</div>
+        <div class="week-row"><div class="wk-title">Semana 14</div><div class="wk-detail">Simulacro completo cronometrado #1 (usa el mock test de TRY! N4 o un examen oficial de años previos). Corrige y anota tus 3 errores más frecuentes.</div></div>
+        <div class="week-row"><div class="wk-title">Semana 15</div><div class="wk-detail">Refuerzo puntual de lo fallado + Simulacro #2, con foco en velocidad de lectura.</div></div>
+        <div class="week-row"><div class="wk-title">Semana 16</div><div class="wk-detail">Simulacro #3 + repaso de condicionales, keigo y voz pasiva/causativa (tus temas más densos).</div></div>
+        <div class="week-row"><div class="wk-title">Semana 17</div><div class="wk-detail">Simulacro #4 completo, en condiciones de examen real (mismo horario del 6 de diciembre si es posible).</div></div>
+      </details>
+      <details class="month-block">
+        <summary><span><span class="month-tag">DIC</span>Afinar y presentarte tranquila</span></summary>
+        <div class="month-goal">meta: llegar descansada, no cansada 🌸</div>
+        <div class="week-row"><div class="wk-title">Semana 1</div><div class="wk-detail">Repaso ligero de tus errores más frecuentes de noviembre. Anki activo, sin tarjetas nuevas.</div></div>
+        <div class="week-row"><div class="wk-title">Últimos días</div><div class="wk-detail">Mini-repaso de kanji, nada de contenido nuevo, dormir bien. El domingo 6 de diciembre, confía en tus 4 meses de trabajo 💕</div></div>
+      </details>
+    </div>
+  </div>
+
+  <footer>がんばってね、いつも応援してるよ 🌸</footer>
+</div>
+
+<script>
+/* ---------------- UTILIDADES GLOBALES ---------------- */
+const pastelPool = ['#FFCBD1','#C9E4FF','#E3D4FF','#D4F5DD','#FFF0B3','#FFD9C0','#C9F0E8'];
+let poolIndex = 0;
+function nextPastel(){
+  const c = pastelPool[poolIndex % pastelPool.length];
+  poolIndex++;
+  return c;
+}
+
+function formatMinutes(totalMins) {
+  if (totalMins === 0) return "0 min";
+  if (totalMins < 60) return `${totalMins} min`;
+  const h = Math.floor(totalMins / 60);
+  const m = totalMins % 60;
+  return m > 0 ? `${h}h ${m}m` : `${h}h`;
+}
+
+/* ---------------- LÓGICA DE NAVEGACIÓN (LAS PESTAÑAS) ---------------- */
+const navBtns = document.querySelectorAll('.nav-btn');
+const pageSections = document.querySelectorAll('.page-section');
+
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    navBtns.forEach(b => b.classList.remove('active'));
+    pageSections.forEach(s => s.classList.remove('active-section'));
+
+    btn.classList.add('active');
+    const targetId = btn.getAttribute('data-target');
+    document.getElementById(targetId).classList.add('active-section');
+  });
+});
+
+/* ---------------- TRACKER Y POMODORO ---------------- */
+// Categorías exclusivas para el Pomodoro
+let pomoCategories = [
+  { name: '漢字 Kanji', color: '#FFA6B7', minutes: 0 },
+  { name: '文法 Gramática', color: '#D9C9F0', minutes: 0 },
+  { name: '単語 Vocabulario', color: '#BFE8D4', minutes: 0 },
+  { name: '聴解 Listening', color: '#FFE8A3', minutes: 0 }
+];
+let currentPomoSelection = 0;
+
+const pomoPaletteRow = document.getElementById('pomoPaletteRow');
+const trackerGrid = document.getElementById('trackerGrid');
+
+function renderPomoPalette(){
+  pomoPaletteRow.innerHTML = '';
+  pomoCategories.forEach((cat, idx) => {
+    const swatch = document.createElement('div');
+    swatch.className = 'palette-swatch' + (currentPomoSelection === idx ? ' active' : '');
+
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.className = 'palette-color-input';
+    colorInput.value = cat.color;
+    colorInput.addEventListener('click', (e) => e.stopPropagation());
+    colorInput.addEventListener('input', (e) => {
+      cat.color = e.target.value;
+      renderTracker(); 
+    });
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'palette-name';
+    nameSpan.contentEditable = 'true';
+    nameSpan.textContent = cat.name;
+    nameSpan.addEventListener('click', (e) => e.stopPropagation());
+    nameSpan.addEventListener('blur', () => {
+      cat.name = nameSpan.textContent.trim() || 'Sin nombre';
+      nameSpan.textContent = cat.name;
+      renderTracker(); 
+    });
+    nameSpan.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){ e.preventDefault(); nameSpan.blur(); }
+    });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'palette-delete';
+    deleteBtn.textContent = '✕';
+    deleteBtn.title = 'Eliminar categoría';
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if(pomoCategories.length <= 1){
+        alert('Necesitas al menos una categoría de estudio ♡');
+        return;
+      }
+      pomoCategories.splice(idx, 1);
+      if(currentPomoSelection === idx) currentPomoSelection = 0;
+      else if(currentPomoSelection > idx) currentPomoSelection--;
+      renderPomoPalette();
+      renderTracker();
+    });
+
+    swatch.appendChild(colorInput);
+    swatch.appendChild(nameSpan);
+    swatch.appendChild(deleteBtn);
+    swatch.addEventListener('click', () => {
+      currentPomoSelection = idx;
+      renderPomoPalette();
+    });
+    pomoPaletteRow.appendChild(swatch);
+  });
+
+  const addBtn = document.createElement('div');
+  addBtn.className = 'palette-add-btn';
+  addBtn.textContent = '+ Nueva';
+  addBtn.addEventListener('click', () => {
+    pomoCategories.push({ name:'Nueva', color: nextPastel(), minutes: 0 });
+    currentPomoSelection = pomoCategories.length - 1;
+    renderPomoPalette();
+    renderTracker();
+    const spans = pomoPaletteRow.querySelectorAll('.palette-name');
+    const lastSpan = spans[spans.length - 1];
+    if(lastSpan){ lastSpan.focus(); document.execCommand('selectAll', false, null); }
+  });
+  pomoPaletteRow.appendChild(addBtn);
+}
+
+function renderTracker() {
+  trackerGrid.innerHTML = '';
+  pomoCategories.forEach((cat) => {
+    const card = document.createElement('div');
+    card.className = 'tracker-card';
+    
+    const titleRow = document.createElement('div');
+    titleRow.className = 'tracker-title';
+    const dot = document.createElement('span');
+    dot.className = 'tracker-color-dot';
+    dot.style.backgroundColor = cat.color;
+    titleRow.appendChild(dot);
+    titleRow.appendChild(document.createTextNode(cat.name));
+
+    const timeDisplay = document.createElement('div');
+    timeDisplay.className = 'tracker-time';
+    timeDisplay.textContent = formatMinutes(cat.minutes);
+
+    card.appendChild(titleRow);
+    card.appendChild(timeDisplay);
+    trackerGrid.appendChild(card);
+  });
+}
+
+// Inicializar el sistema del Pomodoro
+renderPomoPalette();
+renderTracker();
+
+// Modificado a "let" para que el tiempo sea editable
+let currentDurationMinutes = 45; 
+let TOTAL = currentDurationMinutes * 60;
+let remaining = TOTAL;
+let timerInterval = null;
+let running = false;
+let sessionCount = 0;
+
+const timeNum = document.getElementById('timeNum');
+const timeLbl = document.getElementById('timeLbl');
+const ringProgress = document.getElementById('ringProgress');
+const pomoDurationText = document.getElementById('pomoDurationText');
+const CIRC = 2 * Math.PI * 100;
+ringProgress.setAttribute('stroke-dasharray', CIRC);
+
+const encouragements = [
+  "¡vas hermoso! sigue así ♡",
+  "cada minuto cuenta, sakura-chan 🌸",
+  "tu perrita duerme, tú brillas ✨",
+  "un kanji a la vez 🎀",
+  "concéntrate, tú puedes 💪🩷"
+];
+
+// Lógica de los botones + y -
+document.getElementById('minusTimeBtn').addEventListener('click', () => {
+  if (running) return; // No deja editar si el reloj ya está corriendo
+  if (currentDurationMinutes <= 5) return; // Mínimo 5 minutos
+  currentDurationMinutes -= 5;
+  TOTAL = currentDurationMinutes * 60;
+  remaining = TOTAL;
+  pomoDurationText.textContent = currentDurationMinutes + ' min';
+  updateDisplay();
+});
+
+document.getElementById('plusTimeBtn').addEventListener('click', () => {
+  if (running) return;
+  currentDurationMinutes += 5;
+  TOTAL = currentDurationMinutes * 60;
+  remaining = TOTAL;
+  pomoDurationText.textContent = currentDurationMinutes + ' min';
+  updateDisplay();
+});
+
+function updateDisplay(){
+  const m = Math.floor(remaining/60).toString().padStart(2,'0');
+  const s = Math.floor(remaining%60).toString().padStart(2,'0');
+  timeNum.textContent = `${m}:${s}`;
+  const offset = CIRC * (remaining/TOTAL);
+  ringProgress.style.strokeDashoffset = offset;
+}
+
+function tick(){
+  if(remaining > 0){
+    remaining--;
+    updateDisplay();
+    if(remaining % 300 === 0){
+      timeLbl.textContent = encouragements[Math.floor(Math.random()*encouragements.length)];
+    }
+  } else {
+    // ¡EL TEMPORIZADOR LLEGÓ A CERO!
+    clearInterval(timerInterval);
+    running = false;
+    sessionCount++;
+    document.getElementById('sessionCount').textContent = sessionCount;
+    timeLbl.textContent = "¡bloque completado! 🎉";
+    
+    // Suma la cantidad exacta de minutos que duró el pomodoro actual
+    pomoCategories[currentPomoSelection].minutes += currentDurationMinutes;
+    renderTracker();
+  }
+}
+
+document.getElementById('startBtn').addEventListener('click', () => {
+  if(running) return;
+  running = true;
+  timeLbl.textContent = `¡enfocada en ${pomoCategories[currentPomoSelection].name}! 🌸`;
+  timerInterval = setInterval(tick, 1000);
+});
+document.getElementById('pauseBtn').addEventListener('click', () => {
+  running = false;
+  clearInterval(timerInterval);
+  timeLbl.textContent = "en pausa, respira 🎀";
+});
+document.getElementById('resetBtn').addEventListener('click', () => {
+  running = false;
+  clearInterval(timerInterval);
+  remaining = TOTAL;
+  updateDisplay();
+  timeLbl.textContent = "lista cuando tú quieras ♡";
+});
+updateDisplay();
+
+
+/* ---------------- LÓGICA DE FLASHCARDS Y QUIZ ---------------- */
+const newVocabWord = document.getElementById('newVocabWord');
+const newVocabTrans = document.getElementById('newVocabTrans');
+const flashcardContainer = document.getElementById('flashcardContainer');
+const addVocabBtn = document.getElementById('addVocabBtn');
+
+let miVocabulario = [
+  { word: '桜 (さくら)', translation: 'Flor de cerezo' },
+  { word: '頑張って', translation: '¡Esfuérzate!' }
+];
+
+function renderFlashcards() {
+  flashcardContainer.innerHTML = '';
+  miVocabulario.forEach((tarjeta, indice) => {
+    const cardDiv = document.createElement('div');
+    cardDiv.className = 'flashcard';
+    
+    const innerDiv = document.createElement('div');
+    innerDiv.className = 'flashcard-inner';
+    
+    const frontDiv = document.createElement('div');
+    frontDiv.className = 'flashcard-front';
+    frontDiv.textContent = tarjeta.word;
+    
+    const backDiv = document.createElement('div');
+    backDiv.className = 'flashcard-back';
+    backDiv.textContent = tarjeta.translation;
+    
+    const deleteBtn = document.createElement('div');
+    deleteBtn.className = 'delete-card';
+    deleteBtn.textContent = '✕';
+    deleteBtn.title = "Eliminar palabra";
+    deleteBtn.addEventListener('click', (evento) => {
+      evento.stopPropagation();
+      miVocabulario.splice(indice, 1);
+      renderFlashcards();
+    });
+    
+    innerDiv.appendChild(frontDiv);
+    innerDiv.appendChild(backDiv);
+    cardDiv.appendChild(innerDiv);
+    cardDiv.appendChild(deleteBtn);
+    
+    cardDiv.addEventListener('click', () => {
+      cardDiv.classList.toggle('is-flipped');
+    });
+    
+    flashcardContainer.appendChild(cardDiv);
+  });
+}
+
+addVocabBtn.addEventListener('click', () => {
+  const palabra = newVocabWord.value.trim();
+  const traduccion = newVocabTrans.value.trim();
+  if (palabra !== '' && traduccion !== '') {
+    miVocabulario.push({ word: palabra, translation: traduccion });
+    newVocabWord.value = ''; 
+    newVocabTrans.value = ''; 
+    renderFlashcards();
+  }
+});
+renderFlashcards();
+
+// --- LÓGICA DEL MINI QUIZ ---
+let quizQueue = [];
+let currentQuizIndex = 0;
+
+const startQuizBtn = document.getElementById('startQuizBtn');
+const endQuizBtn = document.getElementById('endQuizBtn');
+const nextQuizBtn = document.getElementById('nextQuizBtn');
+const quizZone = document.getElementById('quizZone');
+const quizActiveArea = document.getElementById('quizActiveArea');
+const quizCardWrapper = document.getElementById('quizCardWrapper');
+const quizFront = document.getElementById('quizFront');
+const quizBack = document.getElementById('quizBack');
+
+startQuizBtn.addEventListener('click', () => {
+  if(miVocabulario.length === 0){
+    alert('¡No tienes tarjetas! Agrega algunas palabras abajo primero 🌸');
+    return;
+  }
+  quizQueue = [...miVocabulario].sort(() => Math.random() - 0.5);
+  currentQuizIndex = 0;
+  
+  quizZone.style.display = 'none';
+  quizActiveArea.style.display = 'flex';
+  showQuizCard();
+});
+
+function showQuizCard(){
+  quizCardWrapper.classList.remove('is-flipped');
+  if(currentQuizIndex < quizQueue.length){
+    quizFront.textContent = quizQueue[currentQuizIndex].word;
+    quizBack.textContent = quizQueue[currentQuizIndex].translation;
+  } else {
+    endQuiz();
+    setTimeout(() => alert('¡Terminaste todas las palabras! Excelente trabajo 🎉'), 150);
+  }
+}
+
+quizCardWrapper.addEventListener('click', () => {
+  quizCardWrapper.classList.toggle('is-flipped');
+});
+
+nextQuizBtn.addEventListener('click', () => {
+  currentQuizIndex++;
+  showQuizCard();
+});
+
+function endQuiz(){
+  quizZone.style.display = 'block';
+  quizActiveArea.style.display = 'none';
+  quizCardWrapper.classList.remove('is-flipped');
+}
+endQuizBtn.addEventListener('click', endQuiz);
+
+
+/* ---------------- MENÚ SEMANAL ---------------- */
+const days = [
+  { key:'lun', label:'Lun', active:true },
+  { key:'mar', label:'Mar', active:true },
+  { key:'mie', label:'Mié', active:true },
+  { key:'jue', label:'Jue', active:true },
+  { key:'vie', label:'Vie', active:true },
+  { key:'sab', label:'Sáb', active:false },
+  { key:'dom', label:'Dom', active:false },
+];
+
+const activeTasks = [
+  { id:'gramatica', title:'Gramática', detail:'TRY! N4 o Genki II' },
+  { id:'vocabulario', title:'Vocabulario temático', detail:'Repaso de Flashcards / Hajimete no Nihongo' },
+  { id:'kanji', title:'Kanji · Anki', detail:'Repaso de tarjetas + 5-10 kanji nuevos' },
+  { id:'lectura', title:'Lectura', detail:'Un texto corto cronometrado' },
+  { id:'escucha', title:'Escucha activa', detail:'Audio mondai de listening N4' },
+];
+
+const passiveTasks = [
+  { id:'inmersion', title:'Inmersión pasiva', detail:'Podcast, anime o música japonesa de fondo' },
+];
+
+const dayTabsEl = document.getElementById('dayTabs');
+const dayPanelsEl = document.getElementById('dayPanels');
+const state = {}; 
+
+days.forEach((day, idx) => {
+  state[day.key] = {};
+  const tab = document.createElement('div');
+  tab.className = 'day-tab' + (idx===0 ? ' active' : '') + (!day.active ? ' passive-day' : '');
+  tab.textContent = day.active ? day.label : `${day.label} 🌙`;
+  tab.dataset.day = day.key;
+  tab.addEventListener('click', () => selectDay(day.key));
+  dayTabsEl.appendChild(tab);
+
+  const panel = document.createElement('div');
+  panel.className = 'day-panel' + (idx===0 ? ' show' : '');
+  panel.dataset.day = day.key;
+
+  if(day.active){
+    activeTasks.forEach(t => {
+      state[day.key][t.id] = false;
+      panel.appendChild(buildTaskItem(day.key, t));
+    });
+  } else {
+    const note = document.createElement('div');
+    note.className = 'passive-note';
+    note.textContent = 'día de inmersión pasiva — solo disfrutar 🎧🌸';
+    panel.appendChild(note);
+    passiveTasks.forEach(t => {
+      state[day.key][t.id] = false;
+      panel.appendChild(buildTaskItem(day.key, t));
+    });
+  }
+  dayPanelsEl.appendChild(panel);
+});
+
+function buildTaskItem(dayKey, task){
+  const item = document.createElement('div');
+  item.className = 'task-item';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.id = `${dayKey}-${task.id}`;
+  const label = document.createElement('label');
+  label.htmlFor = cb.id;
+  label.innerHTML = `<span class="task-title">${task.title}</span><br>${task.detail}`;
+  cb.addEventListener('change', () => {
+    state[dayKey][task.id] = cb.checked;
+    item.classList.toggle('done', cb.checked);
+    updateProgress();
+  });
+  item.appendChild(cb);
+  item.appendChild(label);
+  return item;
+}
+
+function selectDay(dayKey){
+  document.querySelectorAll('.day-tab').forEach(t => t.classList.toggle('active', t.dataset.day === dayKey));
+  document.querySelectorAll('.day-panel').forEach(p => p.classList.toggle('show', p.dataset.day === dayKey));
+}
+
+function updateProgress(){
+  let total = 0, done = 0;
+  Object.values(state).forEach(dayTasks => {
+    Object.values(dayTasks).forEach(v => {
+      total++;
+      if(v) done++;
+    });
+  });
+  const pct = total ? Math.round((done/total)*100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `${pct}% de la semana completado`;
+}
+
+document.getElementById('resetWeekBtn').addEventListener('click', () => {
+  document.querySelectorAll('.task-item input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.task-item').classList.remove('done');
+  });
+  Object.keys(state).forEach(dayKey => {
+    Object.keys(state[dayKey]).forEach(taskId => state[dayKey][taskId] = false);
+  });
+  updateProgress();
+});
+updateProgress();
+
+/* ---------------- HORARIO SEMANAL ---------------- */
+const scheduleDays = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+const scheduleHours = [];
+for(let h = 7; h <= 22; h++){ scheduleHours.push(`${h}:00`); }
+
+const schedCategories = [
+  { name:'日本語 Estudio', color:'#FFA6B7' },
+  { name:'Universidad', color:'#D9C9F0' },
+  { name:'Papelería / Diseño', color:'#BFE8D4' },
+  { name:'Perrita / Descanso', color:'#FFE8A3' },
+  { name:'Personal', color:'#BEE3F5' },
+];
+
+let currentSchedSelection = 0;
+const schedPaletteRow = document.getElementById('schedPaletteRow');
+
+function renderSchedPalette(){
+  schedPaletteRow.innerHTML = '';
+  schedCategories.forEach((cat, idx) => {
+    const swatch = document.createElement('div');
+    swatch.className = 'palette-swatch' + (currentSchedSelection === idx ? ' active' : '');
+
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.className = 'palette-color-input';
+    colorInput.value = cat.color;
+    colorInput.addEventListener('click', (e) => e.stopPropagation());
+    colorInput.addEventListener('input', (e) => { cat.color = e.target.value; });
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'palette-name';
+    nameSpan.contentEditable = 'true';
+    nameSpan.textContent = cat.name;
+    nameSpan.addEventListener('click', (e) => e.stopPropagation());
+    nameSpan.addEventListener('blur', () => {
+      cat.name = nameSpan.textContent.trim() || 'Sin nombre';
+      nameSpan.textContent = cat.name;
+    });
+    nameSpan.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter'){ e.preventDefault(); nameSpan.blur(); }
+    });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'palette-delete';
+    deleteBtn.textContent = '✕';
+    deleteBtn.title = 'Eliminar categoría';
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if(schedCategories.length <= 1){
+        alert('Necesitas al menos una categoría además del borrador ♡');
+        return;
+      }
+      schedCategories.splice(idx, 1);
+      if(currentSchedSelection === idx) currentSchedSelection = 0;
+      else if(currentSchedSelection > idx) currentSchedSelection--;
+      renderSchedPalette();
+    });
+
+    swatch.appendChild(colorInput);
+    swatch.appendChild(nameSpan);
+    swatch.appendChild(deleteBtn);
+    swatch.addEventListener('click', () => {
+      currentSchedSelection = idx;
+      renderSchedPalette();
+    });
+    schedPaletteRow.appendChild(swatch);
+  });
+
+  const eraser = document.createElement('div');
+  eraser.className = 'palette-swatch' + (currentSchedSelection === -1 ? ' active' : '');
+  const eraserDot = document.createElement('span');
+  eraserDot.className = 'palette-dot eraser';
+  eraser.appendChild(eraserDot);
+  eraser.appendChild(document.createTextNode('Borrador'));
+  eraser.addEventListener('click', () => {
+    currentSchedSelection = -1;
+    renderSchedPalette();
+  });
+  schedPaletteRow.appendChild(eraser);
+
+  const addBtn = document.createElement('div');
+  addBtn.className = 'palette-add-btn';
+  addBtn.textContent = '+ Nueva';
+  addBtn.addEventListener('click', () => {
+    schedCategories.push({ name:'Nueva', color: nextPastel() });
+    currentSchedSelection = schedCategories.length - 1;
+    renderSchedPalette();
+    const spans = schedPaletteRow.querySelectorAll('.palette-name');
+    const lastSpan = spans[spans.length - 1];
+    if(lastSpan){ lastSpan.focus(); document.execCommand('selectAll', false, null); }
+  });
+  schedPaletteRow.appendChild(addBtn);
+}
+renderSchedPalette();
+
+const scheduleGrid = document.getElementById('scheduleGrid');
+const corner = document.createElement('div');
+corner.className = 'sched-header corner';
+scheduleGrid.appendChild(corner);
+
+scheduleDays.forEach(d => {
+  const head = document.createElement('div');
+  head.className = 'sched-header';
+  head.textContent = d;
+  scheduleGrid.appendChild(head);
+});
+
+scheduleHours.forEach(hour => {
+  const timeLabel = document.createElement('div');
+  timeLabel.className = 'sched-time';
+  timeLabel.textContent = hour;
+  scheduleGrid.appendChild(timeLabel);
+
+  scheduleDays.forEach(d => {
+    const cell = document.createElement('div');
+    cell.className = 'sched-cell';
+    cell.contentEditable = 'true';
+    cell.dataset.day = d;
+    cell.dataset.hour = hour;
+    cell.addEventListener('mousedown', () => {
+      if(currentSchedSelection === -1){
+        cell.style.background = '';
+      } else {
+        cell.style.background = schedCategories[currentSchedSelection].color;
+      }
+    });
+    scheduleGrid.appendChild(cell);
+  });
+});
+
+document.getElementById('clearScheduleBtn').addEventListener('click', () => {
+  document.querySelectorAll('.sched-cell').forEach(cell => {
+    cell.textContent = '';
+    cell.style.background = '';
+  });
+});
+</script>
+</body>
+</html>
