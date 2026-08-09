@@ -195,7 +195,7 @@
     margin-top: 6px;
   }
 
-  /* ---------- PALETAS EDITABLES (Reutilizable para Pomodoro y Horario) ---------- */
+  /* ---------- PALETAS EDITABLES ---------- */
   .palette-row{ display:flex; flex-wrap:wrap; gap:8px; margin-bottom:10px; }
   .palette-swatch{
     display:flex; align-items:center; gap:6px; padding:6px 10px 6px 8px; border-radius:999px;
@@ -219,135 +219,123 @@
     outline:none; cursor:text; border-bottom:1px dashed transparent; min-width:12px;
   }
   .palette-name:focus{ border-bottom-color:var(--pink-deep); }
-
   .palette-delete{
     background:none; border:none; color:var(--pink-deep); font-weight:800; cursor:pointer;
     font-size:0.85rem; line-height:1; padding:0 0 0 2px; opacity:0.55;
   }
   .palette-delete:hover{ opacity:1; }
-
   .palette-add-btn{
     display:flex; align-items:center; gap:4px; padding:6px 14px; border-radius:999px;
     border:2px dashed var(--pink-light); cursor:pointer; font-size:0.75rem; font-weight:700;
     background:white; color:var(--pink-deep);
   }
 
+  /* ---------- CALENDARIO MENSUAL ---------- */
+  .calendar-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .calendar-header h3 { font-family:'Kiwi Maru', serif; color:var(--pink-deep); font-size:1.2rem; margin:0; text-transform: capitalize; }
+  .calendar-nav-btn { background:#FFF0F3; border:none; color:var(--pink-deep); padding:6px 12px; border-radius:12px; cursor:pointer; font-weight:bold; transition: background 0.2s; }
+  .calendar-nav-btn:hover { background: #FFE3E9; }
+  .calendar-grid { display:grid; grid-template-columns:repeat(7, 1fr); gap:6px; }
+  .calendar-day-name { text-align:center; font-weight:800; font-size:0.8rem; color:var(--pink-deep); padding-bottom:4px; border-bottom: 2px dashed #FFE3E9; margin-bottom: 4px; }
+  .calendar-day { 
+    background:#FFFDFE; border:1.5px solid #FFE3E9; border-radius:8px; min-height:65px; 
+    padding:4px; cursor:pointer; display:flex; flex-direction:column; gap:4px; transition:all 0.15s ease; 
+  }
+  .calendar-day:hover { border-color:var(--pink-deep); transform: translateY(-2px); box-shadow: 0 4px 10px var(--shadow-soft); }
+  .calendar-day.empty { background:transparent; border:none; box-shadow:none; cursor:default; transform: none; }
+  .calendar-day.today { border-color:var(--pink-deep); background:#FFF0F3; }
+  .calendar-date-num { font-family:'Nunito', sans-serif; font-size:0.75rem; font-weight:800; color:var(--plum-text); align-self:flex-end; }
+  
+  .calendar-event { 
+    color: white; 
+    font-size: 0.65rem; font-weight: 800; padding: 4px 6px; border-radius: 6px; 
+    line-height: 1.2; word-break: break-word; text-align: center;
+    text-shadow: 0px 1px 2px rgba(107,59,71,0.4);
+    box-shadow: 0 2px 5px var(--shadow-soft);
+    transition: background 0.3s ease;
+  }
+  .calendar-hint { font-family:'Caveat', cursive; font-size:1rem; color:var(--pink-deep); margin: -6px 0 14px; opacity:0.85; }
+
+  /* ---------- VENTANA MODAL (POP-UP) PARA EVENTOS ---------- */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(107, 59, 71, 0.4); z-index: 1000;
+    align-items: center; justify-content: center; backdrop-filter: blur(3px);
+  }
+  .modal-card {
+    background: var(--white-petal); border-radius: 28px; padding: 24px;
+    width: 90%; max-width: 360px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    border: 2px solid #FFE3E9; position: relative;
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  @keyframes popIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  .modal-card h3 { color: var(--pink-deep); font-family: 'Kiwi Maru', serif; margin: 0 0 16px; font-size: 1.2rem; text-align: center; }
+  .modal-card input[type="text"] {
+    width: 100%; padding: 12px 14px; border-radius: 16px;
+    border: 2px solid var(--gold-ribbon); font-family: 'Nunito'; font-size: 1rem;
+    background: #FFFAFB; color: var(--plum-text); outline: none; margin-bottom: 16px;
+  }
+  .modal-card input[type="text"]:focus { border-color: var(--pink-deep); }
+  
+  .modal-labels-title { font-size: 0.85rem; color: var(--pink-deep); font-weight: 800; margin-bottom: 8px; text-align: center; }
+  .modal-labels-container {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; justify-content: center;
+  }
+  .modal-label-btn {
+    display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 999px;
+    border: 2px solid transparent; cursor: pointer; font-size: 0.8rem; font-weight: 700;
+    background: #FFF6F8; color: var(--plum-text); transition: all 0.2s;
+  }
+  .modal-label-btn.active {
+    border-color: var(--pink-deep); background: white; box-shadow: 0 4px 10px var(--shadow-soft);
+  }
+  .modal-buttons { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+
   /* ---------- MINI QUIZ ---------- */
   .quiz-zone { text-align: center; }
-  .quiz-active-area { display: none; flex-direction: column; align-items: center; gap: 16px; }
-  .quiz-card-wrapper {
-    width: 100%; max-width: 280px; height: 130px;
-    perspective: 1000px; cursor: pointer; margin: 0 auto;
-  }
+  .quiz-active-area { display: none; flex-direction: column; align-items: center; gap: 12px; }
+  .quiz-card-wrapper { width: 100%; max-width: 280px; height: 130px; perspective: 1000px; cursor: pointer; margin: 0 auto; }
   .quiz-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .quiz-progress{ font-family:'Nunito', sans-serif; font-weight:800; font-size:0.85rem; color:var(--pink-deep); }
+  .quiz-score{ font-family:'Nunito', sans-serif; font-weight:800; font-size:0.95rem; color:var(--plum-text); }
+  .quiz-answer-buttons{ display:none; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .quiz-right-btn{ background: linear-gradient(135deg, #BFE8D4, #6FBE99) !important; }
+  .quiz-wrong-btn{ border-color:#F0A6A6 !important; color:#C6534F !important; }
+  .quiz-summary{ text-align:center; }
 
   /* ---------- FLASHCARDS ---------- */
-  .flashcard-input-row {
-    display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;
-  }
-  .flashcard-input-row input {
-    flex: 1; min-width: 120px; padding:10px 14px; border-radius:16px;
-    border:2px solid var(--gold-ribbon); font-family:'Nunito'; font-size:0.95rem;
-    background:#FFFAFB; color:var(--plum-text); outline:none;
-  }
+  .flashcard-input-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .flashcard-input-row input { flex: 1; min-width: 120px; padding:10px 14px; border-radius:16px; border:2px solid var(--gold-ribbon); font-family:'Nunito'; font-size:0.95rem; background:#FFFAFB; color:var(--plum-text); outline:none; }
   .flashcard-input-row input:focus{ border-color:var(--pink-deep); }
-
-  .flashcard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
-    gap: 12px;
-  }
-  .flashcard {
-    background-color: transparent;
-    width: 100%;
-    height: 90px;
-    perspective: 1000px;
-    cursor: pointer;
-    position: relative;
-  }
-  .flashcard-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1);
-    transform-style: preserve-3d;
-  }
-  .flashcard.is-flipped .flashcard-inner {
-    transform: rotateY(180deg);
-  }
-  .flashcard-front, .flashcard-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 16px;
-    padding: 10px;
-    box-shadow: 0 4px 10px var(--shadow-soft);
-    font-weight: 800;
-    font-size: 1rem;
-    word-break: break-word;
-  }
-  .flashcard-front {
-    background-color: #FFF0F3;
-    color: var(--pink-deep);
-    border: 2px solid #FFE3E9;
-  }
-  .flashcard-back {
-    background: linear-gradient(135deg, var(--pink-light), var(--pink-deep));
-    color: white;
-    transform: rotateY(180deg);
-    font-size: 0.9rem;
-  }
-  .delete-card {
-    position: absolute;
-    top: -6px;
-    right: -6px;
-    background: white;
-    color: var(--pink-deep);
-    border: 2px solid var(--pink-light);
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    font-size: 12px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-    opacity: 0;
-    transition: opacity 0.2s;
-  }
-  .flashcard:hover .delete-card {
-    opacity: 1;
-  }
+  .flashcard-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; }
+  .flashcard { background-color: transparent; width: 100%; height: 90px; perspective: 1000px; cursor: pointer; position: relative; }
+  .flashcard-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s cubic-bezier(0.4, 0.2, 0.2, 1); transform-style: preserve-3d; }
+  .flashcard.is-flipped .flashcard-inner { transform: rotateY(180deg); }
+  .flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; -webkit-backface-visibility: hidden; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; border-radius: 16px; padding: 10px; box-shadow: 0 4px 10px var(--shadow-soft); font-weight: 800; font-size: 1rem; word-break: break-word; }
+  .flashcard-front { background-color: #FFF0F3; color: var(--pink-deep); border: 2px solid #FFE3E9; }
+  .flashcard-back { background: linear-gradient(135deg, var(--pink-light), var(--pink-deep)); color: white; transform: rotateY(180deg); font-size: 0.9rem; }
+  .delete-card { position: absolute; top: -6px; right: -6px; background: white; color: var(--pink-deep); border: 2px solid var(--pink-light); border-radius: 50%; width: 24px; height: 24px; font-size: 12px; font-weight: bold; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10; opacity: 0; transition: opacity 0.2s; }
+  .flashcard:hover .delete-card { opacity: 1; }
+  .flashcard-group-dot{ position:absolute; top:-6px; left:-6px; width:14px; height:14px; border-radius:50%; border:2px solid white; box-shadow:0 2px 4px var(--shadow-soft); z-index:5; }
+  .flashcard-stats{ font-family:'Nunito', sans-serif; font-weight:700; font-size:0.7rem; opacity:0.9; margin-top:4px; }
   #quizFront, #quizBack { font-size: 1.3rem; }
 
   /* ---------- DAY TABS Y TASKS ---------- */
   .day-tabs{ display:flex; gap:6px; overflow-x:auto; padding-bottom:6px; margin-bottom:14px; }
-  .day-tab{
-    flex:0 0 auto; padding:8px 14px; border-radius:14px; font-size:0.8rem; font-weight:700;
-    background:#FFF0F3; color:var(--pink-deep); cursor:pointer; border:2px solid transparent;
-    white-space:nowrap;
-  }
+  .day-tab{ flex:0 0 auto; padding:8px 14px; border-radius:14px; font-size:0.8rem; font-weight:700; background:#FFF0F3; color:var(--pink-deep); cursor:pointer; border:2px solid transparent; white-space:nowrap; }
   .day-tab.active{ background: var(--pink-deep); color:white; }
   .day-tab.passive-day{ border-style:dashed; border-color:var(--pink-light); }
-
   .day-panel{ display:none; }
   .day-panel.show{ display:block; }
-
   .task-item{ display:flex; align-items:flex-start; gap:10px; padding:10px 8px; border-bottom: 1px dashed #FFE3E9; }
   .task-item:last-child{ border-bottom:none; }
   .task-item input[type=checkbox]{ width:20px; height:20px; accent-color: var(--pink-deep); margin-top:2px; cursor:pointer; flex-shrink:0; }
   .task-item label{ font-size:0.92rem; line-height:1.35; cursor:pointer; }
   .task-item .task-title{ font-weight:700; color:var(--pink-deep); }
   .task-item.done label{ text-decoration: line-through; opacity:0.55; }
-
   .passive-note{ font-family:'Caveat', cursive; font-size:1.1rem; color:var(--pink-deep); text-align:center; padding: 6px 0 2px; }
 
   /* ---------- PROGRESS ---------- */
@@ -355,7 +343,6 @@
   .progress-bar-bg{ width:100%; height:16px; background:#FFE9ED; border-radius:999px; overflow:hidden; border: 2px solid #FFD6DE; }
   .progress-bar-fill{ height:100%; background: linear-gradient(90deg, var(--pink-light), var(--pink-deep)); border-radius:999px; transition: width .4s ease; width:0%; }
   .progress-label{ text-align:center; font-size:0.85rem; margin-top:6px; color:var(--pink-deep); font-weight:700; }
-
   footer{ text-align:center; font-family:'Caveat', cursive; font-size:1.1rem; color:var(--pink-deep); opacity:0.8; margin-top: 10px; }
 
   /* ---------- HOJA DE RUTA ---------- */
@@ -390,6 +377,33 @@
   .sched-cell:focus{ border-color:var(--pink-deep); cursor:text; }
   .sched-cell:empty::before{ content:"+"; color:#F0C2CB; }
 
+  /* ---------- NOTAS ---------- */
+  .notes-input-row{ display:flex; flex-direction:column; gap:10px; margin-bottom:20px; }
+  .notes-input-row textarea{
+    width:100%; min-height:70px; padding:12px 14px; border-radius:16px;
+    border:2px solid var(--gold-ribbon); font-family:'Nunito'; font-size:0.95rem;
+    background:#FFFAFB; color:var(--plum-text); outline:none; resize:vertical;
+  }
+  .notes-input-row textarea:focus{ border-color:var(--pink-deep); }
+  .notes-grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:14px; }
+  .note-card{
+    border-radius:18px; padding:14px; min-height:120px; box-shadow:0 6px 14px var(--shadow-soft);
+    position:relative; display:flex; flex-direction:column;
+  }
+  .note-text{
+    flex:1; font-size:0.85rem; line-height:1.45; color:var(--plum-text);
+    outline:none; white-space:pre-wrap; word-break:break-word;
+  }
+  .note-date{ font-family:'Caveat', cursive; font-size:0.95rem; color:var(--plum-text); opacity:0.65; margin-top:8px; }
+  .note-delete{
+    position:absolute; top:-6px; right:-6px; background:white; color:var(--pink-deep);
+    border:2px solid var(--pink-light); border-radius:50%; width:24px; height:24px;
+    font-size:12px; font-weight:bold; display:flex; align-items:center; justify-content:center;
+    cursor:pointer; z-index:10; opacity:0; transition:opacity 0.2s;
+  }
+  .note-card:hover .note-delete{ opacity:1; }
+  .notes-empty{ text-align:center; font-family:'Caveat', cursive; font-size:1.1rem; color:var(--pink-deep); opacity:0.8; padding:20px 0; grid-column:1/-1; }
+
   @media (max-width:400px){
     .ring-holder{ width:190px; height:190px; }
     svg.ring{ width:190px; height:190px; }
@@ -407,27 +421,56 @@
 
   <!-- MENÚ DE NAVEGACIÓN SUPERIOR -->
   <nav class="main-nav">
-    <button class="nav-btn active" data-target="sec-pomodoro">🍡 Pomodoro</button>
+    <button class="nav-btn active" data-target="sec-inicio">🏠 Inicio</button>
+    <button class="nav-btn" data-target="sec-pomodoro">🍡 Pomodoro</button>
     <button class="nav-btn" data-target="sec-estudio">📖 Estudio</button>
     <button class="nav-btn" data-target="sec-horario">🗓️ Horario</button>
+    <button class="nav-btn" data-target="sec-calendario">📅 Calendario</button>
     <button class="nav-btn" data-target="sec-ruta">🗺️ Ruta JLPT</button>
+    <button class="nav-btn" data-target="sec-notas">📝 Notas</button>
   </nav>
 
+  <!-- CARPETA 0: INICIO -->
+  <div id="sec-inicio" class="page-section active-section">
+    <div class="card" style="text-align:center;">
+      <h2 style="justify-content:center;">🌸 ¡Hola de nuevo!</h2>
+      <p class="subtitle" style="font-size:1.1rem; margin-bottom:14px;">tu espacio de estudio para el JLPT N4</p>
+      <div class="exam-banner" id="homeCountdown">cargando...</div>
+    </div>
+
+    <div class="card">
+      <h2>📊 Resumen de hoy</h2>
+      <div class="tracker-grid" id="homeStatsGrid"></div>
+    </div>
+
+    <div class="card">
+      <h2>🗓️ Próximo en tu calendario</h2>
+      <div id="homeNextEvent" class="passive-note" style="font-family:'Nunito'; font-size:0.9rem; text-align:left;"></div>
+    </div>
+
+    <div class="card">
+      <h2>🚀 Ir directo a…</h2>
+      <div class="timer-buttons" style="flex-wrap:wrap;">
+        <button class="kawaii-btn" data-gohome="sec-pomodoro">🍡 Pomodoro</button>
+        <button class="kawaii-btn secondary" data-gohome="sec-estudio">📖 Estudio</button>
+        <button class="kawaii-btn secondary" data-gohome="sec-horario">🗓️ Horario</button>
+        <button class="kawaii-btn secondary" data-gohome="sec-calendario">📅 Calendario</button>
+        <button class="kawaii-btn secondary" data-gohome="sec-notas">📝 Notas</button>
+        <button class="kawaii-btn secondary" data-gohome="sec-ruta">🗺️ Ruta JLPT</button>
+      </div>
+    </div>
+  </div>
+
   <!-- CARPETA 1: POMODORO & TRACKER -->
-  <div id="sec-pomodoro" class="page-section active-section">
-    
-    <!-- Selector de Categoría de Estudio -->
+  <div id="sec-pomodoro" class="page-section">
     <div class="card">
       <h2>🎯 ¿Qué vas a estudiar en este bloque?</h2>
       <p class="schedule-hint">Toca una categoría antes de empezar. Puedes editar colores, nombres o agregar nuevas.</p>
       <div class="palette-row" id="pomoPaletteRow"></div>
     </div>
 
-    <!-- Temporizador -->
     <div class="card timer-zone">
       <h2>🍡 Tu Pomodoro</h2>
-      
-      <!-- CONTROLES DE TIEMPO -->
       <div class="timer-settings">
         <button class="kawaii-btn secondary small-btn" id="minusTimeBtn">- 5 min</button>
         <span class="pomo-duration-text" id="pomoDurationText">45 min</span>
@@ -443,8 +486,7 @@
             </linearGradient>
           </defs>
           <circle class="ring-bg" cx="110" cy="110" r="100"></circle>
-          <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="100"
-                  stroke-dasharray="628.3" stroke-dashoffset="0"></circle>
+          <circle class="ring-progress" id="ringProgress" cx="110" cy="110" r="100" stroke-dasharray="628.3" stroke-dashoffset="0"></circle>
         </svg>
         <div class="time-display">
           <span class="num" id="timeNum">45:00</span>
@@ -459,43 +501,58 @@
       <div class="session-count"><span class="bow">🎀</span> Bloques completados hoy: <span id="sessionCount">0</span></div>
     </div>
 
-    <!-- Tracker de Tiempo -->
     <div class="card">
       <h2>📊 Tu Progreso de Estudio</h2>
       <p class="schedule-hint">Cada vez que termines un pomodoro, el tiempo se sumará automáticamente aquí.</p>
-      <div class="tracker-grid" id="trackerGrid">
-        <!-- Las tarjetitas del tracker se generarán aquí -->
-      </div>
+      <div class="tracker-grid" id="trackerGrid"></div>
     </div>
   </div>
 
   <!-- CARPETA 2: ESTUDIO Y TAREAS -->
   <div id="sec-estudio" class="page-section">
-    
-    <!-- MINI QUIZ INTERACTIVO -->
     <div class="card">
-      <h2>🎮 Mini Quiz de Memoria</h2>
+      <h2>🎮 Quiz de Memoria</h2>
       <div class="quiz-zone" id="quizZone">
-        <p class="subtitle" style="font-size:0.95rem; margin-bottom:14px; margin-top:-6px;">Pon a prueba las flashcards que tienes guardadas.</p>
+        <p class="subtitle" style="font-size:0.95rem; margin-bottom:12px; margin-top:-6px;">Elige qué mazo quieres repasar:</p>
+        <div class="modal-labels-container" id="quizGroupSelector" style="margin-bottom:16px;"></div>
         <button class="kawaii-btn" id="startQuizBtn">▶ Empezar Quiz</button>
       </div>
       <div class="quiz-active-area" id="quizActiveArea">
+        <div class="quiz-progress" id="quizProgress">Carta 1 de 5</div>
         <div class="quiz-card-wrapper flashcard" id="quizCardWrapper">
           <div class="flashcard-inner">
             <div class="flashcard-front" id="quizFront"></div>
             <div class="flashcard-back" id="quizBack"></div>
           </div>
         </div>
+        <div class="quiz-score" id="quizScore">✓ 0　✗ 0</div>
+        <div class="quiz-answer-buttons" id="quizAnswerButtons">
+          <button class="kawaii-btn secondary quiz-wrong-btn" id="markWrongBtn">✗ No la sabía</button>
+          <button class="kawaii-btn quiz-right-btn" id="markRightBtn">✓ La sabía</button>
+        </div>
+        <p class="schedule-hint" style="margin:2px 0 0;">toca la tarjeta para voltearla ♡</p>
         <div class="quiz-controls">
-          <button class="kawaii-btn secondary" id="nextQuizBtn">Siguiente ⏭️</button>
-          <button class="kawaii-btn secondary" id="endQuizBtn">Terminar ⏹️</button>
+          <button class="kawaii-btn secondary" id="endQuizBtn">⏹️ Terminar</button>
+        </div>
+      </div>
+      <div class="quiz-summary" id="quizSummary" style="display:none;">
+        <p class="ribbon-title" style="font-size:1.4rem; margin-bottom:4px;" id="quizSummaryTitle">¡Terminaste!</p>
+        <p class="subtitle" id="quizSummaryDetail" style="margin-bottom:16px;"></p>
+        <div class="quiz-controls">
+          <button class="kawaii-btn secondary" id="retryAllBtn">🔁 Repetir todo</button>
+          <button class="kawaii-btn secondary" id="retryWrongBtn">🎯 Solo incorrectas</button>
+          <button class="kawaii-btn" id="closeSummaryBtn">Listo 🌸</button>
         </div>
       </div>
     </div>
 
-    <!-- FLASHCARDS INTERACTIVAS -->
     <div class="card">
       <h2>🎴 Mis Flashcards de Repaso</h2>
+      <p class="schedule-hint">Crea mazos para organizar tus tarjetas — vocabulario, kanji, gramática, lo que quieras. Toca un mazo para elegirlo, o "Ver todas" para mezclarlos ♡</p>
+      <div class="palette-row" id="flashGroupPaletteRow"></div>
+      <div style="text-align:right; margin: -2px 0 14px;">
+        <button class="kawaii-btn secondary small-btn" id="toggleShowAllGroupsBtn">👀 Ver todas</button>
+      </div>
       <div class="flashcard-input-row">
         <input type="text" id="newVocabWord" placeholder="Palabra (ej: 敬語)" />
         <input type="text" id="newVocabTrans" placeholder="Traducción (ej: Lenguaje honorífico)" />
@@ -504,18 +561,15 @@
       <div class="flashcard-grid" id="flashcardContainer"></div>
     </div>
 
-    <!-- MENÚ SEMANAL -->
     <div class="card">
       <h2>📖 Menú semanal flexible</h2>
       <div class="day-tabs" id="dayTabs"></div>
       <div id="dayPanels"></div>
-
       <div class="progress-wrap">
         <div class="progress-bar-bg"><div class="progress-bar-fill" id="progressFill"></div></div>
         <div class="progress-label" id="progressLabel">0% de la semana completado</div>
       </div>
     </div>
-
     <div style="text-align:center; margin-bottom: 20px;">
       <button class="kawaii-btn secondary" id="resetWeekBtn">🧺 Reiniciar semana</button>
     </div>
@@ -526,64 +580,108 @@
     <div class="card">
       <h2>🗓️ Mi horario semanal</h2>
       <p class="schedule-hint">toca el nombre para renombrar, el círculo para cambiar el color, ✕ para eliminar, y "+ Nueva" para crear tus propias categorías ♡</p>
-
       <div class="palette-row" id="schedPaletteRow"></div>
-
       <div class="schedule-scroll">
         <div class="schedule-grid" id="scheduleGrid"></div>
       </div>
-
       <div style="text-align:center; margin-top:14px;">
         <button class="kawaii-btn secondary" id="clearScheduleBtn">🌸 Borrar horario</button>
       </div>
     </div>
   </div>
 
-  <!-- CARPETA 4: HOJA DE RUTA -->
+  <!-- CARPETA 4: CALENDARIO MENSUAL -->
+  <div id="sec-calendario" class="page-section">
+    <div class="card">
+      <h2>📅 Calendario Mensual</h2>
+      <p class="schedule-hint" style="margin-bottom: 6px;">1. Modifica tus etiquetas aquí abajo.<br>2. Toca cualquier día para añadirle un evento con color. ♡</p>
+      
+      <!-- PALETA DE ETIQUETAS GLOBALES PARA CALENDARIO -->
+      <div class="palette-row" id="calPaletteRow" style="justify-content: center; margin-bottom: 16px;"></div>
+
+      <div class="calendar-header">
+        <button class="calendar-nav-btn" id="calPrevBtn">◀ Atrás</button>
+        <h3 id="calMonthYear">Mes Año</h3>
+        <button class="calendar-nav-btn" id="calNextBtn">Sig ▶</button>
+      </div>
+
+      <div class="calendar-grid" id="calendarGrid">
+        <!-- Los días se generan con Javascript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CARPETA 5: HOJA DE RUTA -->
   <div id="sec-ruta" class="page-section">
     <div class="card">
       <h2>🗺️ Hoja de ruta · Agosto → Diciembre</h2>
       <div class="exam-banner">🎀 Examen JLPT N4 <span>Domingo 6 de diciembre de 2026 · USACH</span></div>
-
       <details class="month-block" open>
         <summary><span><span class="month-tag">AGO</span>Cerrar la primera mitad de Genki II</span></summary>
         <div class="month-goal">meta: llegar a fin de mes con la lección 19 dominada 🌷</div>
-        <div class="week-row"><div class="wk-title">Semana 1-2</div><div class="wk-detail">Genki II Lección 16 "Objetos perdidos" + Lección 17 "Quejas y chismes". Vocabulario temático de Hajimete no Nihongo (elige 2 categorías del 単語1500). Empiezas tu mazo de Anki con Kanji Master N4 (primeras categorías temáticas, 10-15 kanji/semana).</div></div>
-        <div class="week-row"><div class="wk-title">Semana 3-4</div><div class="wk-detail">Genki II Lección 18 "El trabajo de medio tiempo de John" + Lección 19 "Conociendo al jefe" (aquí arranca el keigo honorífico, tu primer gran reto gramatical). Sigue Anki a diario.</div></div>
+        <div class="week-row"><div class="wk-title">Semana 1-2</div><div class="wk-detail">Genki II Lección 16 "Objetos perdidos" + Lección 17 "Quejas y chismes". Vocabulario temático de Hajimete no Nihongo. Empiezas tu mazo de Anki con Kanji Master N4.</div></div>
+        <div class="week-row"><div class="wk-title">Semana 3-4</div><div class="wk-detail">Genki II Lección 18 "El trabajo de medio tiempo de John" + Lección 19 "Conociendo al jefe". Sigue Anki a diario.</div></div>
       </details>
       <details class="month-block">
         <summary><span><span class="month-tag">SEP</span>Terminar Genki II por completo</span></summary>
         <div class="month-goal">meta: cerrar las 23 lecciones antes de octubre 🎀</div>
-        <div class="week-row"><div class="wk-title">Semana 5-6</div><div class="wk-detail">Lección 20 "Mary de compras" (keigo humilde) + Lección 21 "El ladrón" (voz pasiva, ukemi). Anki sube de ritmo (15-20 kanji nuevos/semana).</div></div>
-        <div class="week-row"><div class="wk-title">Semana 7-8</div><div class="wk-detail">Lección 22 "Educación en Japón" (causativo) + Lección 23 "Despedida" (causativo-pasivo, el punto más avanzado). ¡Genki II completo! Empieza a cronometrar lecturas cortas sin presión.</div></div>
+        <div class="week-row"><div class="wk-title">Semana 5-6</div><div class="wk-detail">Lección 20 "Mary de compras" + Lección 21 "El ladrón".</div></div>
+        <div class="week-row"><div class="wk-title">Semana 7-8</div><div class="wk-detail">Lección 22 "Educación en Japón" + Lección 23 "Despedida". ¡Genki II completo! Empieza lecturas cortas.</div></div>
       </details>
       <details class="month-block">
         <summary><span><span class="month-tag">OCT</span>TRY! N4 intensivo + cerrar kanji y vocabulario</span></summary>
         <div class="month-goal">meta: todo el contenido nuevo cerrado antes del 1 de noviembre 🌸</div>
-        <div class="week-row"><div class="wk-title">Semana 9</div><div class="wk-detail">TRY! N4 Cap. 1 "Saludos" + Cap. 2 "Haciendo dulces" (12 patrones gramaticales).</div></div>
-        <div class="week-row"><div class="wk-title">Semana 10</div><div class="wk-detail">TRY! N4 Cap. 3 "Una boda" (9 patrones) + Cap. 4 "Soy de Hanoi" (12 patrones).</div></div>
-        <div class="week-row"><div class="wk-title">Semana 11</div><div class="wk-detail">TRY! N4 Cap. 5 "Plan de hiking" + Cap. 6 "Un gato en el árbol" (condicionales たら/ば/と/なら — tu combo más importante).</div></div>
-        <div class="week-row"><div class="wk-title">Semana 12</div><div class="wk-detail">TRY! N4 Cap. 7 "Amo el piano" + Cap. 8 "Reserva de un ryokan" + Cap. 9 "Entrevista post-victoria".</div></div>
-        <div class="week-row"><div class="wk-title">Semana 13</div><div class="wk-detail">TRY! N4 Cap. 10 "Entrevista de trabajo part-time" + Cap. 11 "Vocabulario útil" (partículas, adverbios, verbos transitivos/intransitivos). Cierra los 207 kanji de Kanji Master N4 y las 1500 palabras de Hajimete no Nihongo.</div></div>
+        <div class="week-row"><div class="wk-title">Semana 9-10</div><div class="wk-detail">TRY! N4 Cap. 1 al 4 (saludos, recetas, etc).</div></div>
+        <div class="week-row"><div class="wk-title">Semana 11-13</div><div class="wk-detail">TRY! N4 Cap. 5 al 11. Cierra los 207 kanji de Kanji Master N4 y las 1500 palabras de Hajimete no Nihongo.</div></div>
       </details>
       <details class="month-block">
         <summary><span><span class="month-tag">NOV</span>Mes 100% simulacro</span></summary>
         <div class="month-goal">meta: medir tiempos reales, sobre todo en lectura 🎀</div>
-        <div class="week-row"><div class="wk-title">Semana 14</div><div class="wk-detail">Simulacro completo cronometrado #1 (usa el mock test de TRY! N4 o un examen oficial de años previos). Corrige y anota tus 3 errores más frecuentes.</div></div>
-        <div class="week-row"><div class="wk-title">Semana 15</div><div class="wk-detail">Refuerzo puntual de lo fallado + Simulacro #2, con foco en velocidad de lectura.</div></div>
-        <div class="week-row"><div class="wk-title">Semana 16</div><div class="wk-detail">Simulacro #3 + repaso de condicionales, keigo y voz pasiva/causativa (tus temas más densos).</div></div>
-        <div class="week-row"><div class="wk-title">Semana 17</div><div class="wk-detail">Simulacro #4 completo, en condiciones de examen real (mismo horario del 6 de diciembre si es posible).</div></div>
+        <div class="week-row"><div class="wk-title">Semana 14-17</div><div class="wk-detail">1 Simulacro completo cronometrado por semana. Corrige tus errores y repasa condicionales y keigo.</div></div>
       </details>
       <details class="month-block">
         <summary><span><span class="month-tag">DIC</span>Afinar y presentarte tranquila</span></summary>
         <div class="month-goal">meta: llegar descansada, no cansada 🌸</div>
-        <div class="week-row"><div class="wk-title">Semana 1</div><div class="wk-detail">Repaso ligero de tus errores más frecuentes de noviembre. Anki activo, sin tarjetas nuevas.</div></div>
-        <div class="week-row"><div class="wk-title">Últimos días</div><div class="wk-detail">Mini-repaso de kanji, nada de contenido nuevo, dormir bien. El domingo 6 de diciembre, confía en tus 4 meses de trabajo 💕</div></div>
+        <div class="week-row"><div class="wk-title">Últimos días</div><div class="wk-detail">Repaso ligero de kanji, nada de contenido nuevo, dormir bien. El domingo 6 de diciembre, confía en tu trabajo 💕</div></div>
       </details>
     </div>
   </div>
 
+  <!-- CARPETA 6: NOTAS -->
+  <div id="sec-notas" class="page-section">
+    <div class="card">
+      <h2>📝 Mis notas</h2>
+      <p class="schedule-hint">Apunta lo que quieras recordar: dudas de gramática, ideas para tu tienda, pendientes sueltos ♡</p>
+      <div class="notes-input-row">
+        <textarea id="newNoteInput" placeholder="Escribe una nota nueva..."></textarea>
+        <button class="kawaii-btn" id="addNoteBtn" style="align-self:flex-end;">+ Guardar nota</button>
+      </div>
+      <div class="notes-grid" id="notesGrid"></div>
+    </div>
+  </div>
+
   <footer>がんばってね、いつも応援してるよ 🌸</footer>
+</div>
+
+<!-- fin del contenedor principal -->
+
+<!-- VENTANA MODAL EMERGENTE PARA EVENTOS DEL CALENDARIO -->
+<div id="eventModal" class="modal-overlay">
+  <div class="modal-card">
+    <h3 id="modalTitle">Nuevo evento</h3>
+    <input type="text" id="modalEventInput" placeholder="Ej: Simulacro JLPT 🌸" autocomplete="off" />
+    
+    <div class="modal-labels-title">Selecciona la etiqueta:</div>
+    <div class="modal-labels-container" id="modalLabelsContainer">
+      <!-- Los botones de las etiquetas se generan dinámicamente con JS -->
+    </div>
+
+    <div class="modal-buttons">
+      <button class="kawaii-btn" id="modalSaveBtn">Guardar</button>
+      <button class="kawaii-btn secondary" id="modalDeleteBtn">Borrar</button>
+      <button class="kawaii-btn secondary" id="modalCancelBtn" style="border:none; box-shadow:none;">Cancelar</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -595,7 +693,6 @@ function nextPastel(){
   poolIndex++;
   return c;
 }
-
 function formatMinutes(totalMins) {
   if (totalMins === 0) return "0 min";
   if (totalMins < 60) return `${totalMins} min`;
@@ -604,23 +701,28 @@ function formatMinutes(totalMins) {
   return m > 0 ? `${h}h ${m}m` : `${h}h`;
 }
 
-/* ---------------- LÓGICA DE NAVEGACIÓN (LAS PESTAÑAS) ---------------- */
+/* ---------------- LÓGICA DE NAVEGACIÓN ---------------- */
 const navBtns = document.querySelectorAll('.nav-btn');
 const pageSections = document.querySelectorAll('.page-section');
-
 navBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     navBtns.forEach(b => b.classList.remove('active'));
     pageSections.forEach(s => s.classList.remove('active-section'));
-
     btn.classList.add('active');
     const targetId = btn.getAttribute('data-target');
     document.getElementById(targetId).classList.add('active-section');
+    if(targetId === 'sec-inicio') renderHome();
+  });
+});
+document.querySelectorAll('[data-gohome]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetId = btn.getAttribute('data-gohome');
+    navBtns.forEach(b => b.classList.toggle('active', b.dataset.target === targetId));
+    pageSections.forEach(s => s.classList.toggle('active-section', s.id === targetId));
   });
 });
 
-/* ---------------- TRACKER Y POMODORO ---------------- */
-// Categorías exclusivas para el Pomodoro
+/* ---------------- TRACKER Y POMODORO EDITABLE ---------------- */
 let pomoCategories = [
   { name: '漢字 Kanji', color: '#FFA6B7', minutes: 0 },
   { name: '文法 Gramática', color: '#D9C9F0', minutes: 0 },
@@ -628,7 +730,6 @@ let pomoCategories = [
   { name: '聴解 Listening', color: '#FFE8A3', minutes: 0 }
 ];
 let currentPomoSelection = 0;
-
 const pomoPaletteRow = document.getElementById('pomoPaletteRow');
 const trackerGrid = document.getElementById('trackerGrid');
 
@@ -637,7 +738,6 @@ function renderPomoPalette(){
   pomoCategories.forEach((cat, idx) => {
     const swatch = document.createElement('div');
     swatch.className = 'palette-swatch' + (currentPomoSelection === idx ? ' active' : '');
-
     const colorInput = document.createElement('input');
     colorInput.type = 'color';
     colorInput.className = 'palette-color-input';
@@ -647,7 +747,6 @@ function renderPomoPalette(){
       cat.color = e.target.value;
       renderTracker(); 
     });
-
     const nameSpan = document.createElement('span');
     nameSpan.className = 'palette-name';
     nameSpan.contentEditable = 'true';
@@ -661,24 +760,18 @@ function renderPomoPalette(){
     nameSpan.addEventListener('keydown', (e) => {
       if(e.key === 'Enter'){ e.preventDefault(); nameSpan.blur(); }
     });
-
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'palette-delete';
     deleteBtn.textContent = '✕';
-    deleteBtn.title = 'Eliminar categoría';
     deleteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if(pomoCategories.length <= 1){
-        alert('Necesitas al menos una categoría de estudio ♡');
-        return;
-      }
+      if(pomoCategories.length <= 1){ alert('Necesitas al menos una categoría ♡'); return; }
       pomoCategories.splice(idx, 1);
       if(currentPomoSelection === idx) currentPomoSelection = 0;
       else if(currentPomoSelection > idx) currentPomoSelection--;
       renderPomoPalette();
       renderTracker();
     });
-
     swatch.appendChild(colorInput);
     swatch.appendChild(nameSpan);
     swatch.appendChild(deleteBtn);
@@ -688,7 +781,6 @@ function renderPomoPalette(){
     });
     pomoPaletteRow.appendChild(swatch);
   });
-
   const addBtn = document.createElement('div');
   addBtn.className = 'palette-add-btn';
   addBtn.textContent = '+ Nueva';
@@ -709,7 +801,6 @@ function renderTracker() {
   pomoCategories.forEach((cat) => {
     const card = document.createElement('div');
     card.className = 'tracker-card';
-    
     const titleRow = document.createElement('div');
     titleRow.className = 'tracker-title';
     const dot = document.createElement('span');
@@ -717,23 +808,18 @@ function renderTracker() {
     dot.style.backgroundColor = cat.color;
     titleRow.appendChild(dot);
     titleRow.appendChild(document.createTextNode(cat.name));
-
     const timeDisplay = document.createElement('div');
     timeDisplay.className = 'tracker-time';
     timeDisplay.textContent = formatMinutes(cat.minutes);
-
     card.appendChild(titleRow);
     card.appendChild(timeDisplay);
     trackerGrid.appendChild(card);
   });
 }
-
-// Inicializar el sistema del Pomodoro
 renderPomoPalette();
 renderTracker();
 
-// Modificado a "let" para que el tiempo sea editable
-let currentDurationMinutes = 45; 
+let currentDurationMinutes = 45;
 let TOTAL = currentDurationMinutes * 60;
 let remaining = TOTAL;
 let timerInterval = null;
@@ -755,10 +841,9 @@ const encouragements = [
   "concéntrate, tú puedes 💪🩷"
 ];
 
-// Lógica de los botones + y -
 document.getElementById('minusTimeBtn').addEventListener('click', () => {
-  if (running) return; // No deja editar si el reloj ya está corriendo
-  if (currentDurationMinutes <= 5) return; // Mínimo 5 minutos
+  if (running) return;
+  if (currentDurationMinutes <= 5) return;
   currentDurationMinutes -= 5;
   TOTAL = currentDurationMinutes * 60;
   remaining = TOTAL;
@@ -791,14 +876,11 @@ function tick(){
       timeLbl.textContent = encouragements[Math.floor(Math.random()*encouragements.length)];
     }
   } else {
-    // ¡EL TEMPORIZADOR LLEGÓ A CERO!
     clearInterval(timerInterval);
     running = false;
     sessionCount++;
     document.getElementById('sessionCount').textContent = sessionCount;
     timeLbl.textContent = "¡bloque completado! 🎉";
-    
-    // Suma la cantidad exacta de minutos que duró el pomodoro actual
     pomoCategories[currentPomoSelection].minutes += currentDurationMinutes;
     renderTracker();
   }
@@ -824,54 +906,156 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 });
 updateDisplay();
 
-
-/* ---------------- LÓGICA DE FLASHCARDS Y QUIZ ---------------- */
+/* ---------------- FLASHCARDS CON MAZOS ---------------- */
 const newVocabWord = document.getElementById('newVocabWord');
 const newVocabTrans = document.getElementById('newVocabTrans');
 const flashcardContainer = document.getElementById('flashcardContainer');
 const addVocabBtn = document.getElementById('addVocabBtn');
+const flashGroupPaletteRow = document.getElementById('flashGroupPaletteRow');
+const toggleShowAllGroupsBtn = document.getElementById('toggleShowAllGroupsBtn');
+
+let flashcardGroups = [
+  { id: 'fg-0', name: '🌸 General', color: '#FFA6B7' }
+];
+let flashGroupIdCounter = 0;
+let currentFlashGroupSelection = 'fg-0'; // mazo activo: dónde se agregan tarjetas nuevas y qué se filtra
+let showAllFlashGroups = false;
+let vocabIdCounter = 2;
 
 let miVocabulario = [
-  { word: '桜 (さくら)', translation: 'Flor de cerezo' },
-  { word: '頑張って', translation: '¡Esfuérzate!' }
+  { id: 1, word: '桜 (さくら)', translation: 'Flor de cerezo', groupId: 'fg-0', correct: 0, incorrect: 0 },
+  { id: 2, word: '頑張って', translation: '¡Esfuérzate!', groupId: 'fg-0', correct: 0, incorrect: 0 }
 ];
+
+function getFlashGroupById(id){
+  return flashcardGroups.find(g => g.id === id) || null;
+}
+
+function renderFlashGroupPalette(){
+  flashGroupPaletteRow.innerHTML = '';
+  flashcardGroups.forEach((group) => {
+    const swatch = document.createElement('div');
+    swatch.className = 'palette-swatch' + (!showAllFlashGroups && currentFlashGroupSelection === group.id ? ' active' : '');
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.className = 'palette-color-input';
+    colorInput.value = group.color;
+    colorInput.addEventListener('click', (e) => e.stopPropagation());
+    colorInput.addEventListener('input', (e) => {
+      group.color = e.target.value;
+      renderFlashcards();
+    });
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'palette-name';
+    nameSpan.contentEditable = 'true';
+    nameSpan.textContent = group.name;
+    nameSpan.addEventListener('click', (e) => e.stopPropagation());
+    nameSpan.addEventListener('blur', () => {
+      group.name = nameSpan.textContent.trim() || 'Sin nombre';
+      nameSpan.textContent = group.name;
+      renderFlashcards();
+      renderQuizGroupSelector();
+    });
+    nameSpan.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); nameSpan.blur(); } });
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'palette-delete';
+    deleteBtn.textContent = '✕';
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if(flashcardGroups.length <= 1){ alert('Necesitas al menos un mazo ♡'); return; }
+      if(!confirm(`¿Borrar el mazo "${group.name}"? Sus tarjetas pasarán al primer mazo disponible.`)) return;
+      const fallbackGroup = flashcardGroups.find(g => g.id !== group.id);
+      miVocabulario.forEach(card => { if(card.groupId === group.id) card.groupId = fallbackGroup.id; });
+      flashcardGroups = flashcardGroups.filter(g => g.id !== group.id);
+      if(currentFlashGroupSelection === group.id) currentFlashGroupSelection = fallbackGroup.id;
+      renderFlashGroupPalette();
+      renderFlashcards();
+      renderQuizGroupSelector();
+    });
+    swatch.appendChild(colorInput);
+    swatch.appendChild(nameSpan);
+    swatch.appendChild(deleteBtn);
+    swatch.addEventListener('click', () => {
+      currentFlashGroupSelection = group.id;
+      showAllFlashGroups = false;
+      toggleShowAllGroupsBtn.textContent = '👀 Ver todas';
+      renderFlashGroupPalette();
+      renderFlashcards();
+    });
+    flashGroupPaletteRow.appendChild(swatch);
+  });
+  const addBtn = document.createElement('div');
+  addBtn.className = 'palette-add-btn';
+  addBtn.textContent = '+ Nuevo mazo';
+  addBtn.addEventListener('click', () => {
+    flashGroupIdCounter++;
+    const newGroup = { id: `fg-${flashGroupIdCounter}`, name: 'Nuevo mazo', color: nextPastel() };
+    flashcardGroups.push(newGroup);
+    currentFlashGroupSelection = newGroup.id;
+    showAllFlashGroups = false;
+    toggleShowAllGroupsBtn.textContent = '👀 Ver todas';
+    renderFlashGroupPalette();
+    renderFlashcards();
+    renderQuizGroupSelector();
+    const spans = flashGroupPaletteRow.querySelectorAll('.palette-name');
+    const lastSpan = spans[spans.length - 1];
+    if(lastSpan){ lastSpan.focus(); document.execCommand('selectAll', false, null); }
+  });
+  flashGroupPaletteRow.appendChild(addBtn);
+}
+
+toggleShowAllGroupsBtn.addEventListener('click', () => {
+  showAllFlashGroups = !showAllFlashGroups;
+  toggleShowAllGroupsBtn.textContent = showAllFlashGroups ? '🙈 Ver por mazo' : '👀 Ver todas';
+  renderFlashGroupPalette();
+  renderFlashcards();
+});
 
 function renderFlashcards() {
   flashcardContainer.innerHTML = '';
-  miVocabulario.forEach((tarjeta, indice) => {
+  const cardsToShow = showAllFlashGroups
+    ? miVocabulario
+    : miVocabulario.filter(c => c.groupId === currentFlashGroupSelection);
+
+  if(cardsToShow.length === 0){
+    const empty = document.createElement('div');
+    empty.className = 'notes-empty';
+    empty.textContent = 'este mazo aún no tiene tarjetas 🌸';
+    flashcardContainer.appendChild(empty);
+    return;
+  }
+
+  cardsToShow.forEach((tarjeta) => {
+    const group = getFlashGroupById(tarjeta.groupId);
     const cardDiv = document.createElement('div');
     cardDiv.className = 'flashcard';
-    
+
+    const groupDot = document.createElement('span');
+    groupDot.className = 'flashcard-group-dot';
+    groupDot.style.backgroundColor = group ? group.color : '#E3B7C0';
+    cardDiv.appendChild(groupDot);
+
     const innerDiv = document.createElement('div');
     innerDiv.className = 'flashcard-inner';
-    
     const frontDiv = document.createElement('div');
     frontDiv.className = 'flashcard-front';
     frontDiv.textContent = tarjeta.word;
-    
     const backDiv = document.createElement('div');
     backDiv.className = 'flashcard-back';
-    backDiv.textContent = tarjeta.translation;
-    
+    backDiv.innerHTML = tarjeta.translation + ((tarjeta.correct + tarjeta.incorrect) > 0 ? `<div class="flashcard-stats">✓${tarjeta.correct} ✗${tarjeta.incorrect}</div>` : '');
     const deleteBtn = document.createElement('div');
     deleteBtn.className = 'delete-card';
     deleteBtn.textContent = '✕';
-    deleteBtn.title = "Eliminar palabra";
     deleteBtn.addEventListener('click', (evento) => {
       evento.stopPropagation();
-      miVocabulario.splice(indice, 1);
+      miVocabulario = miVocabulario.filter(c => c.id !== tarjeta.id);
       renderFlashcards();
     });
-    
     innerDiv.appendChild(frontDiv);
     innerDiv.appendChild(backDiv);
     cardDiv.appendChild(innerDiv);
     cardDiv.appendChild(deleteBtn);
-    
-    cardDiv.addEventListener('click', () => {
-      cardDiv.classList.toggle('is-flipped');
-    });
-    
+    cardDiv.addEventListener('click', () => { cardDiv.classList.toggle('is-flipped'); });
     flashcardContainer.appendChild(cardDiv);
   });
 }
@@ -880,67 +1064,164 @@ addVocabBtn.addEventListener('click', () => {
   const palabra = newVocabWord.value.trim();
   const traduccion = newVocabTrans.value.trim();
   if (palabra !== '' && traduccion !== '') {
-    miVocabulario.push({ word: palabra, translation: traduccion });
-    newVocabWord.value = ''; 
-    newVocabTrans.value = ''; 
-    renderFlashcards();
+    vocabIdCounter++;
+    miVocabulario.push({ id: vocabIdCounter, word: palabra, translation: traduccion, groupId: currentFlashGroupSelection, correct: 0, incorrect: 0 });
+    newVocabWord.value = ''; newVocabTrans.value = ''; renderFlashcards();
   }
 });
+
+renderFlashGroupPalette();
 renderFlashcards();
 
-// --- LÓGICA DEL MINI QUIZ ---
-let quizQueue = [];
-let currentQuizIndex = 0;
-
+/* ---------------- QUIZ MEJORADO (por mazo, con correcta/incorrecta) ---------------- */
 const startQuizBtn = document.getElementById('startQuizBtn');
 const endQuizBtn = document.getElementById('endQuizBtn');
-const nextQuizBtn = document.getElementById('nextQuizBtn');
 const quizZone = document.getElementById('quizZone');
 const quizActiveArea = document.getElementById('quizActiveArea');
 const quizCardWrapper = document.getElementById('quizCardWrapper');
 const quizFront = document.getElementById('quizFront');
 const quizBack = document.getElementById('quizBack');
+const quizProgress = document.getElementById('quizProgress');
+const quizScore = document.getElementById('quizScore');
+const quizAnswerButtons = document.getElementById('quizAnswerButtons');
+const markRightBtn = document.getElementById('markRightBtn');
+const markWrongBtn = document.getElementById('markWrongBtn');
+const quizGroupSelector = document.getElementById('quizGroupSelector');
+const quizSummary = document.getElementById('quizSummary');
+const quizSummaryTitle = document.getElementById('quizSummaryTitle');
+const quizSummaryDetail = document.getElementById('quizSummaryDetail');
+const retryAllBtn = document.getElementById('retryAllBtn');
+const retryWrongBtn = document.getElementById('retryWrongBtn');
+const closeSummaryBtn = document.getElementById('closeSummaryBtn');
+
+let quizQueue = [];
+let currentQuizIndex = 0;
+let quizCorrectCount = 0;
+let quizIncorrectCount = 0;
+let quizWrongCards = [];
+let quizGroupFilter = 'all';
+let lastQuizPool = [];
+
+function renderQuizGroupSelector(){
+  quizGroupSelector.innerHTML = '';
+  const allBtn = document.createElement('div');
+  allBtn.className = 'modal-label-btn' + (quizGroupFilter === 'all' ? ' active' : '');
+  allBtn.textContent = '🌐 Todas';
+  allBtn.onclick = () => { quizGroupFilter = 'all'; renderQuizGroupSelector(); };
+  quizGroupSelector.appendChild(allBtn);
+  flashcardGroups.forEach(group => {
+    const btn = document.createElement('div');
+    btn.className = 'modal-label-btn' + (quizGroupFilter === group.id ? ' active' : '');
+    btn.innerHTML = `<span class="tracker-color-dot" style="background:${group.color}"></span> ${group.name}`;
+    btn.onclick = () => { quizGroupFilter = group.id; renderQuizGroupSelector(); };
+    quizGroupSelector.appendChild(btn);
+  });
+}
+renderQuizGroupSelector();
+
+function buildQueueFromCards(cards){
+  return [...cards].sort(() => Math.random() - 0.5);
+}
+
+function updateQuizScoreDisplay(){
+  quizScore.textContent = `✓ ${quizCorrectCount}　✗ ${quizIncorrectCount}`;
+}
+
+function showQuizCard(){
+  quizCardWrapper.classList.remove('is-flipped');
+  quizAnswerButtons.style.display = 'none';
+  if(currentQuizIndex < quizQueue.length){
+    quizProgress.textContent = `Carta ${currentQuizIndex + 1} de ${quizQueue.length}`;
+    quizFront.textContent = quizQueue[currentQuizIndex].word;
+    quizBack.textContent = quizQueue[currentQuizIndex].translation;
+    updateQuizScoreDisplay();
+  } else {
+    finishQuiz();
+  }
+}
 
 startQuizBtn.addEventListener('click', () => {
-  if(miVocabulario.length === 0){
-    alert('¡No tienes tarjetas! Agrega algunas palabras abajo primero 🌸');
-    return;
-  }
-  quizQueue = [...miVocabulario].sort(() => Math.random() - 0.5);
+  const pool = quizGroupFilter === 'all' ? miVocabulario : miVocabulario.filter(c => c.groupId === quizGroupFilter);
+  if(pool.length === 0){ alert('Este mazo todavía no tiene tarjetas 🌸'); return; }
+  lastQuizPool = pool;
+  quizQueue = buildQueueFromCards(pool);
   currentQuizIndex = 0;
-  
+  quizCorrectCount = 0;
+  quizIncorrectCount = 0;
+  quizWrongCards = [];
   quizZone.style.display = 'none';
+  quizSummary.style.display = 'none';
   quizActiveArea.style.display = 'flex';
   showQuizCard();
 });
 
-function showQuizCard(){
-  quizCardWrapper.classList.remove('is-flipped');
-  if(currentQuizIndex < quizQueue.length){
-    quizFront.textContent = quizQueue[currentQuizIndex].word;
-    quizBack.textContent = quizQueue[currentQuizIndex].translation;
-  } else {
-    endQuiz();
-    setTimeout(() => alert('¡Terminaste todas las palabras! Excelente trabajo 🎉'), 150);
-  }
-}
-
 quizCardWrapper.addEventListener('click', () => {
   quizCardWrapper.classList.toggle('is-flipped');
+  quizAnswerButtons.style.display = quizCardWrapper.classList.contains('is-flipped') ? 'flex' : 'none';
 });
 
-nextQuizBtn.addEventListener('click', () => {
+function answerCurrentCard(wasCorrect){
+  const card = quizQueue[currentQuizIndex];
+  const originalCard = miVocabulario.find(c => c.id === card.id);
+  if(wasCorrect){
+    quizCorrectCount++;
+    if(originalCard) originalCard.correct++;
+  } else {
+    quizIncorrectCount++;
+    if(originalCard) originalCard.incorrect++;
+    quizWrongCards.push(card);
+  }
   currentQuizIndex++;
   showQuizCard();
-});
+}
+markRightBtn.addEventListener('click', () => answerCurrentCard(true));
+markWrongBtn.addEventListener('click', () => answerCurrentCard(false));
+
+function finishQuiz(){
+  quizActiveArea.style.display = 'none';
+  quizSummary.style.display = 'block';
+  const total = quizCorrectCount + quizIncorrectCount;
+  const pct = total ? Math.round((quizCorrectCount / total) * 100) : 0;
+  quizSummaryTitle.textContent = pct >= 80 ? '¡Excelente! 🎉' : pct >= 50 ? '¡Vas muy bien! 🌸' : '¡Sigue practicando! 💪';
+  quizSummaryDetail.textContent = `Acertaste ${quizCorrectCount} de ${total} (${pct}%)`;
+  retryWrongBtn.style.display = quizWrongCards.length > 0 ? 'inline-block' : 'none';
+  renderFlashcards();
+}
 
 function endQuiz(){
   quizZone.style.display = 'block';
   quizActiveArea.style.display = 'none';
+  quizSummary.style.display = 'none';
   quizCardWrapper.classList.remove('is-flipped');
+  renderFlashcards();
 }
 endQuizBtn.addEventListener('click', endQuiz);
+closeSummaryBtn.addEventListener('click', endQuiz);
 
+retryAllBtn.addEventListener('click', () => {
+  quizQueue = buildQueueFromCards(lastQuizPool);
+  currentQuizIndex = 0;
+  quizCorrectCount = 0;
+  quizIncorrectCount = 0;
+  quizWrongCards = [];
+  quizSummary.style.display = 'none';
+  quizActiveArea.style.display = 'flex';
+  showQuizCard();
+});
+
+retryWrongBtn.addEventListener('click', () => {
+  const wrongPool = [...quizWrongCards];
+  if(wrongPool.length === 0) return;
+  lastQuizPool = wrongPool;
+  quizQueue = buildQueueFromCards(wrongPool);
+  currentQuizIndex = 0;
+  quizCorrectCount = 0;
+  quizIncorrectCount = 0;
+  quizWrongCards = [];
+  quizSummary.style.display = 'none';
+  quizActiveArea.style.display = 'flex';
+  showQuizCard();
+});
 
 /* ---------------- MENÚ SEMANAL ---------------- */
 const days = [
@@ -952,7 +1233,6 @@ const days = [
   { key:'sab', label:'Sáb', active:false },
   { key:'dom', label:'Dom', active:false },
 ];
-
 const activeTasks = [
   { id:'gramatica', title:'Gramática', detail:'TRY! N4 o Genki II' },
   { id:'vocabulario', title:'Vocabulario temático', detail:'Repaso de Flashcards / Hajimete no Nihongo' },
@@ -960,15 +1240,12 @@ const activeTasks = [
   { id:'lectura', title:'Lectura', detail:'Un texto corto cronometrado' },
   { id:'escucha', title:'Escucha activa', detail:'Audio mondai de listening N4' },
 ];
-
 const passiveTasks = [
   { id:'inmersion', title:'Inmersión pasiva', detail:'Podcast, anime o música japonesa de fondo' },
 ];
-
 const dayTabsEl = document.getElementById('dayTabs');
 const dayPanelsEl = document.getElementById('dayPanels');
 const state = {}; 
-
 days.forEach((day, idx) => {
   state[day.key] = {};
   const tab = document.createElement('div');
@@ -977,29 +1254,20 @@ days.forEach((day, idx) => {
   tab.dataset.day = day.key;
   tab.addEventListener('click', () => selectDay(day.key));
   dayTabsEl.appendChild(tab);
-
   const panel = document.createElement('div');
   panel.className = 'day-panel' + (idx===0 ? ' show' : '');
   panel.dataset.day = day.key;
-
   if(day.active){
-    activeTasks.forEach(t => {
-      state[day.key][t.id] = false;
-      panel.appendChild(buildTaskItem(day.key, t));
-    });
+    activeTasks.forEach(t => { state[day.key][t.id] = false; panel.appendChild(buildTaskItem(day.key, t)); });
   } else {
     const note = document.createElement('div');
     note.className = 'passive-note';
     note.textContent = 'día de inmersión pasiva — solo disfrutar 🎧🌸';
     panel.appendChild(note);
-    passiveTasks.forEach(t => {
-      state[day.key][t.id] = false;
-      panel.appendChild(buildTaskItem(day.key, t));
-    });
+    passiveTasks.forEach(t => { state[day.key][t.id] = false; panel.appendChild(buildTaskItem(day.key, t)); });
   }
   dayPanelsEl.appendChild(panel);
 });
-
 function buildTaskItem(dayKey, task){
   const item = document.createElement('div');
   item.className = 'task-item';
@@ -1018,33 +1286,20 @@ function buildTaskItem(dayKey, task){
   item.appendChild(label);
   return item;
 }
-
 function selectDay(dayKey){
   document.querySelectorAll('.day-tab').forEach(t => t.classList.toggle('active', t.dataset.day === dayKey));
   document.querySelectorAll('.day-panel').forEach(p => p.classList.toggle('show', p.dataset.day === dayKey));
 }
-
 function updateProgress(){
   let total = 0, done = 0;
-  Object.values(state).forEach(dayTasks => {
-    Object.values(dayTasks).forEach(v => {
-      total++;
-      if(v) done++;
-    });
-  });
+  Object.values(state).forEach(dayTasks => { Object.values(dayTasks).forEach(v => { total++; if(v) done++; }); });
   const pct = total ? Math.round((done/total)*100) : 0;
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressLabel').textContent = `${pct}% de la semana completado`;
 }
-
 document.getElementById('resetWeekBtn').addEventListener('click', () => {
-  document.querySelectorAll('.task-item input[type=checkbox]').forEach(cb => {
-    cb.checked = false;
-    cb.closest('.task-item').classList.remove('done');
-  });
-  Object.keys(state).forEach(dayKey => {
-    Object.keys(state[dayKey]).forEach(taskId => state[dayKey][taskId] = false);
-  });
+  document.querySelectorAll('.task-item input[type=checkbox]').forEach(cb => { cb.checked = false; cb.closest('.task-item').classList.remove('done'); });
+  Object.keys(state).forEach(dayKey => { Object.keys(state[dayKey]).forEach(taskId => state[dayKey][taskId] = false); });
   updateProgress();
 });
 updateProgress();
@@ -1053,7 +1308,6 @@ updateProgress();
 const scheduleDays = ['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
 const scheduleHours = [];
 for(let h = 7; h <= 22; h++){ scheduleHours.push(`${h}:00`); }
-
 const schedCategories = [
   { name:'日本語 Estudio', color:'#FFA6B7' },
   { name:'Universidad', color:'#D9C9F0' },
@@ -1061,23 +1315,19 @@ const schedCategories = [
   { name:'Perrita / Descanso', color:'#FFE8A3' },
   { name:'Personal', color:'#BEE3F5' },
 ];
-
 let currentSchedSelection = 0;
 const schedPaletteRow = document.getElementById('schedPaletteRow');
-
 function renderSchedPalette(){
   schedPaletteRow.innerHTML = '';
   schedCategories.forEach((cat, idx) => {
     const swatch = document.createElement('div');
     swatch.className = 'palette-swatch' + (currentSchedSelection === idx ? ' active' : '');
-
     const colorInput = document.createElement('input');
     colorInput.type = 'color';
     colorInput.className = 'palette-color-input';
     colorInput.value = cat.color;
     colorInput.addEventListener('click', (e) => e.stopPropagation());
     colorInput.addEventListener('input', (e) => { cat.color = e.target.value; });
-
     const nameSpan = document.createElement('span');
     nameSpan.className = 'palette-name';
     nameSpan.contentEditable = 'true';
@@ -1087,48 +1337,32 @@ function renderSchedPalette(){
       cat.name = nameSpan.textContent.trim() || 'Sin nombre';
       nameSpan.textContent = cat.name;
     });
-    nameSpan.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter'){ e.preventDefault(); nameSpan.blur(); }
-    });
-
+    nameSpan.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); nameSpan.blur(); } });
     const deleteBtn = document.createElement('button');
     deleteBtn.className = 'palette-delete';
     deleteBtn.textContent = '✕';
-    deleteBtn.title = 'Eliminar categoría';
     deleteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      if(schedCategories.length <= 1){
-        alert('Necesitas al menos una categoría además del borrador ♡');
-        return;
-      }
+      if(schedCategories.length <= 1){ alert('Necesitas al menos una categoría ♡'); return; }
       schedCategories.splice(idx, 1);
       if(currentSchedSelection === idx) currentSchedSelection = 0;
       else if(currentSchedSelection > idx) currentSchedSelection--;
       renderSchedPalette();
     });
-
     swatch.appendChild(colorInput);
     swatch.appendChild(nameSpan);
     swatch.appendChild(deleteBtn);
-    swatch.addEventListener('click', () => {
-      currentSchedSelection = idx;
-      renderSchedPalette();
-    });
+    swatch.addEventListener('click', () => { currentSchedSelection = idx; renderSchedPalette(); });
     schedPaletteRow.appendChild(swatch);
   });
-
   const eraser = document.createElement('div');
   eraser.className = 'palette-swatch' + (currentSchedSelection === -1 ? ' active' : '');
   const eraserDot = document.createElement('span');
   eraserDot.className = 'palette-dot eraser';
   eraser.appendChild(eraserDot);
   eraser.appendChild(document.createTextNode('Borrador'));
-  eraser.addEventListener('click', () => {
-    currentSchedSelection = -1;
-    renderSchedPalette();
-  });
+  eraser.addEventListener('click', () => { currentSchedSelection = -1; renderSchedPalette(); });
   schedPaletteRow.appendChild(eraser);
-
   const addBtn = document.createElement('div');
   addBtn.className = 'palette-add-btn';
   addBtn.textContent = '+ Nueva';
@@ -1148,20 +1382,17 @@ const scheduleGrid = document.getElementById('scheduleGrid');
 const corner = document.createElement('div');
 corner.className = 'sched-header corner';
 scheduleGrid.appendChild(corner);
-
 scheduleDays.forEach(d => {
   const head = document.createElement('div');
   head.className = 'sched-header';
   head.textContent = d;
   scheduleGrid.appendChild(head);
 });
-
 scheduleHours.forEach(hour => {
   const timeLabel = document.createElement('div');
   timeLabel.className = 'sched-time';
   timeLabel.textContent = hour;
   scheduleGrid.appendChild(timeLabel);
-
   scheduleDays.forEach(d => {
     const cell = document.createElement('div');
     cell.className = 'sched-cell';
@@ -1169,22 +1400,406 @@ scheduleHours.forEach(hour => {
     cell.dataset.day = d;
     cell.dataset.hour = hour;
     cell.addEventListener('mousedown', () => {
-      if(currentSchedSelection === -1){
-        cell.style.background = '';
-      } else {
-        cell.style.background = schedCategories[currentSchedSelection].color;
-      }
+      if(currentSchedSelection === -1){ cell.style.background = ''; } 
+      else { cell.style.background = schedCategories[currentSchedSelection].color; }
     });
     scheduleGrid.appendChild(cell);
   });
 });
-
 document.getElementById('clearScheduleBtn').addEventListener('click', () => {
-  document.querySelectorAll('.sched-cell').forEach(cell => {
-    cell.textContent = '';
-    cell.style.background = '';
-  });
+  document.querySelectorAll('.sched-cell').forEach(cell => { cell.textContent = ''; cell.style.background = ''; });
 });
+
+/* ---------------- CALENDARIO MENSUAL CON ETIQUETAS GLOBALES ---------------- */
+let calCategories = [
+  { name: '🎀 JLPT N4', color: '#CE7183' },
+  { name: '📚 Universidad', color: '#D9C9F0' },
+  { name: '✨ Personal', color: '#BEE3F5' }
+];
+let currentCalSelection = 0;
+
+const calPaletteRow = document.getElementById('calPaletteRow');
+
+function renderCalPalette() {
+  calPaletteRow.innerHTML = '';
+  calCategories.forEach((cat, idx) => {
+    const swatch = document.createElement('div');
+    swatch.className = 'palette-swatch active'; // En esta vista siempre se ven activas
+    
+    const colorInput = document.createElement('input');
+    colorInput.type = 'color';
+    colorInput.className = 'palette-color-input';
+    colorInput.value = cat.color;
+    colorInput.addEventListener('click', (e) => e.stopPropagation());
+    colorInput.addEventListener('input', (e) => { 
+      cat.color = e.target.value; 
+      renderCalendar(currentMonth, currentYear); // Actualiza los colores de los eventos vivos
+    });
+
+    const nameSpan = document.createElement('span');
+    nameSpan.className = 'palette-name';
+    nameSpan.contentEditable = 'true';
+    nameSpan.textContent = cat.name;
+    nameSpan.addEventListener('click', (e) => e.stopPropagation());
+    nameSpan.addEventListener('blur', () => {
+      cat.name = nameSpan.textContent.trim() || 'Sin nombre';
+      nameSpan.textContent = cat.name;
+      renderCalendar(currentMonth, currentYear);
+    });
+    nameSpan.addEventListener('keydown', (e) => { if(e.key === 'Enter'){ e.preventDefault(); nameSpan.blur(); } });
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = 'palette-delete';
+    deleteBtn.textContent = '✕';
+    deleteBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if(calCategories.length <= 1){ alert('Necesitas al menos una etiqueta ♡'); return; }
+      
+      // Limpia los eventos que usaban esta etiqueta y reajusta los índices
+      Object.keys(calendarEvents).forEach(key => {
+        if(calendarEvents[key].catIdx === idx) {
+          delete calendarEvents[key];
+        } else if (calendarEvents[key].catIdx > idx) {
+          calendarEvents[key].catIdx--; 
+        }
+      });
+
+      calCategories.splice(idx, 1);
+      if(currentCalSelection === idx) currentCalSelection = 0;
+      else if(currentCalSelection > idx) currentCalSelection--;
+      
+      renderCalPalette();
+      renderCalendar(currentMonth, currentYear);
+    });
+
+    swatch.appendChild(colorInput);
+    swatch.appendChild(nameSpan);
+    swatch.appendChild(deleteBtn);
+    swatch.addEventListener('click', () => { 
+      currentCalSelection = idx; 
+      renderCalPalette(); 
+    });
+    calPaletteRow.appendChild(swatch);
+  });
+
+  const addBtn = document.createElement('div');
+  addBtn.className = 'palette-add-btn';
+  addBtn.textContent = '+ Nueva';
+  addBtn.addEventListener('click', () => {
+    calCategories.push({ name:'Etiqueta', color: nextPastel() });
+    currentCalSelection = calCategories.length - 1;
+    renderCalPalette();
+    const spans = calPaletteRow.querySelectorAll('.palette-name');
+    const lastSpan = spans[spans.length - 1];
+    if(lastSpan){ lastSpan.focus(); document.execCommand('selectAll', false, null); }
+  });
+  calPaletteRow.appendChild(addBtn);
+}
+renderCalPalette();
+
+const calGrid = document.getElementById('calendarGrid');
+const calMonthYear = document.getElementById('calMonthYear');
+let calDate = new Date();
+let currentMonth = calDate.getMonth();
+let currentYear = calDate.getFullYear();
+
+// Ahora el calendario guarda el índice de la categoría (catIdx)
+let calendarEvents = {
+  "2026-12-06": { title: "🎀 Examen JLPT N4 (USACH)", catIdx: 0 }
+};
+
+const monthNames = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+
+let activeDateKey = null; 
+let selectedModalCatIdx = 0; 
+
+const eventModal = document.getElementById('eventModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalEventInput = document.getElementById('modalEventInput');
+const modalLabelsContainer = document.getElementById('modalLabelsContainer');
+const modalSaveBtn = document.getElementById('modalSaveBtn');
+const modalDeleteBtn = document.getElementById('modalDeleteBtn');
+const modalCancelBtn = document.getElementById('modalCancelBtn');
+
+function renderModalLabels() {
+  modalLabelsContainer.innerHTML = '';
+  calCategories.forEach((cat, idx) => {
+    const btn = document.createElement('div');
+    btn.className = 'modal-label-btn' + (idx === selectedModalCatIdx ? ' active' : '');
+    btn.innerHTML = `<span class="tracker-color-dot" style="background:${cat.color}"></span> ${cat.name}`;
+    btn.onclick = () => {
+      selectedModalCatIdx = idx;
+      renderModalLabels(); 
+    };
+    modalLabelsContainer.appendChild(btn);
+  });
+}
+
+function renderCalendar(month, year) {
+  calGrid.innerHTML = '';
+  calMonthYear.textContent = `${monthNames[month]} ${year}`;
+
+  dayNames.forEach(day => {
+    const el = document.createElement('div');
+    el.className = 'calendar-day-name';
+    el.textContent = day;
+    calGrid.appendChild(el);
+  });
+
+  const firstDayIndex = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = new Date();
+
+  for (let i = 0; i < firstDayIndex; i++) {
+    const emptySlot = document.createElement('div');
+    emptySlot.className = 'calendar-day empty';
+    calGrid.appendChild(emptySlot);
+  }
+
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dayEl = document.createElement('div');
+    dayEl.className = 'calendar-day';
+    
+    if (year === today.getFullYear() && month === today.getMonth() && i === today.getDate()) {
+      dayEl.classList.add('today');
+    }
+
+    const numEl = document.createElement('div');
+    numEl.className = 'calendar-date-num';
+    numEl.textContent = i;
+    dayEl.appendChild(numEl);
+
+    const dateKey = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+    
+    if (calendarEvents[dateKey] && calCategories[calendarEvents[dateKey].catIdx]) {
+      const ev = calendarEvents[dateKey];
+      const cat = calCategories[ev.catIdx];
+      
+      const eventBadge = document.createElement('div');
+      eventBadge.className = 'calendar-event';
+      eventBadge.textContent = ev.title;
+      eventBadge.style.background = cat.color;
+      dayEl.appendChild(eventBadge);
+    }
+
+    dayEl.addEventListener('click', () => {
+      activeDateKey = dateKey;
+      modalTitle.textContent = `Día ${i} de ${monthNames[month]}`;
+      
+      if (calendarEvents[dateKey]) {
+        modalEventInput.value = calendarEvents[dateKey].title;
+        selectedModalCatIdx = calendarEvents[dateKey].catIdx;
+      } else {
+        modalEventInput.value = '';
+        selectedModalCatIdx = currentCalSelection; 
+      }
+      
+      renderModalLabels();
+      eventModal.style.display = 'flex';
+      modalEventInput.focus();
+    });
+
+    calGrid.appendChild(dayEl);
+  }
+}
+
+document.getElementById('calPrevBtn').addEventListener('click', () => {
+  currentMonth--;
+  if (currentMonth < 0) { currentMonth = 11; currentYear--; }
+  renderCalendar(currentMonth, currentYear);
+});
+document.getElementById('calNextBtn').addEventListener('click', () => {
+  currentMonth++;
+  if (currentMonth > 11) { currentMonth = 0; currentYear++; }
+  renderCalendar(currentMonth, currentYear);
+});
+
+modalSaveBtn.addEventListener('click', () => {
+  const text = modalEventInput.value.trim();
+  if (text === '') {
+    delete calendarEvents[activeDateKey];
+  } else {
+    calendarEvents[activeDateKey] = {
+      title: text,
+      catIdx: selectedModalCatIdx
+    };
+  }
+  eventModal.style.display = 'none';
+  renderCalendar(currentMonth, currentYear);
+});
+
+modalDeleteBtn.addEventListener('click', () => {
+  delete calendarEvents[activeDateKey];
+  eventModal.style.display = 'none';
+  renderCalendar(currentMonth, currentYear);
+});
+
+modalCancelBtn.addEventListener('click', () => {
+  eventModal.style.display = 'none';
+});
+
+renderCalendar(currentMonth, currentYear);
+
+/* ---------------- NOTAS ---------------- */
+let myNotes = [];
+let noteIdCounter = 0;
+const notesGrid = document.getElementById('notesGrid');
+const newNoteInput = document.getElementById('newNoteInput');
+const addNoteBtn = document.getElementById('addNoteBtn');
+
+function renderNotes(){
+  notesGrid.innerHTML = '';
+  if(myNotes.length === 0){
+    const empty = document.createElement('div');
+    empty.className = 'notes-empty';
+    empty.textContent = 'aún no tienes notas guardadas 🌸';
+    notesGrid.appendChild(empty);
+    return;
+  }
+  myNotes.forEach(note => {
+    const card = document.createElement('div');
+    card.className = 'note-card';
+    card.style.background = note.color;
+
+    const textDiv = document.createElement('div');
+    textDiv.className = 'note-text';
+    textDiv.contentEditable = 'true';
+    textDiv.textContent = note.text;
+    textDiv.addEventListener('blur', () => {
+      const newText = textDiv.textContent.trim();
+      if(newText === ''){
+        myNotes = myNotes.filter(n => n.id !== note.id);
+        renderNotes();
+      } else {
+        note.text = newText;
+      }
+    });
+
+    const dateDiv = document.createElement('div');
+    dateDiv.className = 'note-date';
+    dateDiv.textContent = note.date;
+
+    const deleteBtn = document.createElement('div');
+    deleteBtn.className = 'note-delete';
+    deleteBtn.textContent = '✕';
+    deleteBtn.addEventListener('click', () => {
+      myNotes = myNotes.filter(n => n.id !== note.id);
+      renderNotes();
+    });
+
+    card.appendChild(textDiv);
+    card.appendChild(dateDiv);
+    card.appendChild(deleteBtn);
+    notesGrid.appendChild(card);
+  });
+}
+
+addNoteBtn.addEventListener('click', () => {
+  const text = newNoteInput.value.trim();
+  if(text === '') return;
+  noteIdCounter++;
+  myNotes.unshift({
+    id: noteIdCounter,
+    text: text,
+    color: nextPastel(),
+    date: new Date().toLocaleDateString('es-CL', { day:'numeric', month:'short' })
+  });
+  newNoteInput.value = '';
+  renderNotes();
+});
+newNoteInput.addEventListener('keydown', (e) => {
+  if(e.key === 'Enter' && (e.ctrlKey || e.metaKey)){
+    e.preventDefault();
+    addNoteBtn.click();
+  }
+});
+renderNotes();
+
+/* ---------------- PÁGINA DE INICIO ---------------- */
+function daysUntilExam(){
+  const examDate = new Date(2026, 11, 6); // 6 de diciembre de 2026
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  examDate.setHours(0,0,0,0);
+  const diffMs = examDate - today;
+  return Math.round(diffMs / (1000 * 60 * 60 * 24));
+}
+
+function getWeeklyPercent(){
+  let total = 0, done = 0;
+  Object.values(state).forEach(dayTasks => { Object.values(dayTasks).forEach(v => { total++; if(v) done++; }); });
+  return total ? Math.round((done / total) * 100) : 0;
+}
+
+function getTodayMinutes(){
+  return pomoCategories.reduce((sum, cat) => sum + cat.minutes, 0);
+}
+
+function findNextEvent(){
+  const todayStart = new Date();
+  todayStart.setHours(0,0,0,0);
+  const upcomingKeys = Object.keys(calendarEvents)
+    .filter(key => new Date(key + 'T00:00:00') >= todayStart)
+    .sort();
+  if(upcomingKeys.length === 0) return null;
+  const key = upcomingKeys[0];
+  const ev = calendarEvents[key];
+  const cat = calCategories[ev.catIdx];
+  const d = new Date(key + 'T00:00:00');
+  const dateStr = d.toLocaleDateString('es-CL', { day: 'numeric', month: 'long' });
+  return { title: ev.title, dateStr, color: cat ? cat.color : '#E3B7C0' };
+}
+
+function renderHome(){
+  const days = daysUntilExam();
+  const countdownEl = document.getElementById('homeCountdown');
+  if(days > 0){
+    countdownEl.innerHTML = `Faltan <span style="font-size:1.5rem;">${days}</span> días para tu examen JLPT N4<span>Domingo 6 de diciembre · USACH 🎀</span>`;
+  } else if(days === 0){
+    countdownEl.innerHTML = `¡Hoy es tu examen JLPT N4!<span>tú puedes, confía en tu trabajo 💕</span>`;
+  } else {
+    countdownEl.innerHTML = `¡Ya diste tu examen JLPT N4!<span>お疲れ様でした 🌸</span>`;
+  }
+
+  const statsGrid = document.getElementById('homeStatsGrid');
+  statsGrid.innerHTML = '';
+  const stats = [
+    { label: 'Bloques hoy', value: String(sessionCount), color: '#FFA6B7' },
+    { label: 'Minutos estudiados', value: formatMinutes(getTodayMinutes()), color: '#BFE8D4' },
+    { label: 'Semana completada', value: getWeeklyPercent() + '%', color: '#D9C9F0' }
+  ];
+  stats.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'tracker-card';
+    const titleRow = document.createElement('div');
+    titleRow.className = 'tracker-title';
+    const dot = document.createElement('span');
+    dot.className = 'tracker-color-dot';
+    dot.style.backgroundColor = s.color;
+    titleRow.appendChild(dot);
+    titleRow.appendChild(document.createTextNode(s.label));
+    const valueDiv = document.createElement('div');
+    valueDiv.className = 'tracker-time';
+    valueDiv.textContent = s.value;
+    card.appendChild(titleRow);
+    card.appendChild(valueDiv);
+    statsGrid.appendChild(card);
+  });
+
+  const nextEventEl = document.getElementById('homeNextEvent');
+  const next = findNextEvent();
+  if(next){
+    nextEventEl.innerHTML = `<span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:${next.color}; margin-right:8px; vertical-align:middle;"></span><strong style="color:var(--pink-deep);">${next.title}</strong><br><span style="text-transform:capitalize;">${next.dateStr}</span>`;
+  } else {
+    nextEventEl.textContent = 'no tienes eventos próximos agendados 🌷';
+  }
+}
+renderHome();
+
 </script>
 </body>
 </html>
